@@ -5,10 +5,10 @@ _This guide is from developers for developers. If your are not a developer, plea
 
 
 **:warning: :warning: :warning:
-We strongly recommend doing this on Staging/Beta environment first, so that you are sure the integration is smooth and nothing breaks.**
+We strongly recommend doing this on Staging/Beta environment first to make sure the integration is smooth and nothing breaks down.**
 
-Metrilo provides javascript library for integration with your custom e-commerce solution.
-The same library is used for our Magento and Woocommerce plugins so they can be valuable source when integrating Metrilo with your web-site. You can find them on:
+Metrilo provides a javascript library for integration with your custom e-commerce solution.
+The same library is used for our Magento and Woocommerce plugins so they can be a valuable source when integrating Metrilo with your website. You can find them on:
 - [Magento Plugin](https://github.com/Metrilo/Magento-Plugin)
 - [Woocommerce Plugin](https://github.com/Metrilo/WooCommerce-Plugin)
 
@@ -22,9 +22,9 @@ This guide consists of 2 parts:
 
 _You should add the Metrilo javascript snippet on every page you want to track!_
 
-1. Installing the javascript library
+#### Installing the javascript library ####
 
-Lets start by including the javascript snippet bellow right before closing the `head` tag.
+Let's start by including the javascript snippet (bellow) right before closing the `head` tag.
 
 ```
 <script type="text/javascript">
@@ -39,15 +39,14 @@ metrilo.load("<YOUR_PROJECT_TOKEN>");
 
 Consider the `metrilo.load("<YOUR_PROJECT_TOKEN>")` line. Here you should put your project token. You can find it on the Settings page in the Metrilo web-site.
 
-2. Identify user
+#### Identify user ####
 
-Metrilo tracks anonymous user history and it is nice when you have customer details to notify metrilo about them.
-The common use-cases where identification could be done are:
+Metrilo tracks anonymous user history and it is nice to notify Metrilo when you have customer details. The common use cases where identification could be done are:
 * After order, because each order contains customer details
 * After subscription for some resource on your web-site
 * After login
 
-Following example shows how identify works:
+The following example shows how identification works:
 ```javascript
 var identifyParams = { name: 'Johny Bravo', first_name: 'Johny', last_name: 'Bravo', email: 'johnybravo@gmail.com' };
 
@@ -55,19 +54,22 @@ metrilo.identify('johnybravo@gmail.com', identifyParams);
 ```
 _First name and last name are not required_
 
-3. Tracking events
+### Tracking events ###
 
-The main events that are supported from Metrilo library are: order, view product, view category, add to cart, remove from cart, view cart, page view, checkout start.
+The main events that are supported by the Metrilo library are: order, view product, view category, add to cart, remove from cart, view cart, page view, checkout start.
 Optional events you can use are: checkout delivery, checkout payment, checkout confirm.
 
-You can track an event using the call `metrilo.event('<event_type>', event_parameters);`.
+You can track an event using the call
+```javascript
+metrilo.event('<event_type>', event_parameters);
+```
 You can pass multiple events on the same page.
 
-We will describe the allowed parameters and use cases for each event.
+We will describe the parameters allowed and use cases for each event.
 
-3.1. Order
+##### Order #####
 
-When user creates an order on your web-site you can send the following event from your javascript code.
+When a user creates an order on your web-site you can send the following event from your javascript code.
 
 ```javascript
 // Prepare the order parameters
@@ -118,9 +120,9 @@ _Consider escaping the url strings_
 
 The coupons, billing, payment and shipping related parameters are not required.
 
-3.2. View product
+##### View product #####
 
-When the user lands on product page you can track it as follows:
+When the user lands on a product page you can track it as follows:
 
 ```javascript
 var productParams = {
@@ -143,8 +145,8 @@ var productParams = {
 ```
 _Consider escaping the url strings_
 
-3.3. View category
-When user lands on category or kind-of multiproduct listing page you can track view category event:
+##### View category #####
+When a user lands on a category or a multiproduct listing page you can track view category event as follows:
 
 ```javascript
   var categoryParams = {
@@ -154,9 +156,9 @@ When user lands on category or kind-of multiproduct listing page you can track v
 
   metrilo.event('view_category', categoryParams);
 ```
-3.4. **Add to cart**
+##### Add to cart #####
 
-When a product is added to cart you can track add to cart event:
+When a product is added to cart you can track "add to cart" event:
 
 ```javascript
   var productParams = {
@@ -184,16 +186,16 @@ When a product is added to cart you can track add to cart event:
 ```
 _Consider escaping the url strings_
 
-3.5. **Remove from cart**
+##### Remove from cart #####
 
-You can track remove from cart this way:
+You can track "remove from cart" this way:
 ```javascript
 var productParams = { id: '312' };
 
 metrilo.event('remove_from_cart', productParams);
 ```
 
-3.6. **View cart**
+##### View cart #####
 
 When a user views his cart you can track view cart event:
 
@@ -201,9 +203,9 @@ When a user views his cart you can track view cart event:
 metrilo.event('view_cart');
 ```
 
-3.7. Checkout start
+##### Checkout start #####
 
-When a user goes to the checkout page, you should track checkout start event as follows:
+When a user goes to the checkout page, you should track "checkout start" event as follows:
 
 ```javascript
 metrilo.event('checkout_start');
@@ -213,18 +215,27 @@ metrilo.event('checkout_start');
 
 If those events bring value to your business you can track them as follows.
 
-* Checkout delivery - `metrilo.event('checkout_delivery');
+* Checkout delivery
+```javascript
+metrilo.event('checkout_delivery');
+```
 
-* Checkout payment - `metrilo.event('checkout_payment');
+* Checkout payment
+```javascript
+metrilo.event('checkout_payment');
+```
 
-* Checkout confirm - `metrilo.event('checkout_confirm');
+* Checkout confirm
+```javascript
+metrilo.event('checkout_confirm');
+```
 
 ## Back-end Metrilo integration ##
 
 You should integrate your back-end with Metrilo for two main reasons:
 
-- Importing orders from the database - Impor
-- Syncing order data. This means doing API call on create and update of the order.
+- Importing orders from the database
+- Syncing order data. This means doing API call on creating and updating of the order.
 
 Back-end synchronization is important part of the implementation, since it gives opportunity to track changes to the order statuses.
 
@@ -232,7 +243,7 @@ Make a back-end call when creating order is done on the client as well. It's ens
 
 1. The order JSON structure is similar to the front-end one. We will present it using PHP named arrays.
 
-So we have an `orderParams` array, containing 2 `items` (products, subscriptio
+So we have an `orderParams` array, containing 2 `items` (products, subscriptions, etc.)
 
 ```javascript
 var orderParams = {
@@ -308,7 +319,7 @@ For securing the back-end calls to Metrilo API there are some encryption stages 
 
 We will choose PHP for the examples bellow, but those are applicable for almost all popular languages.
 
-```PHP
+```php
 // eventJson is from the example above and is an named array with nested order arrays etc.
 $events = array(
   'token' => '<YOUR_TOKEN_HERE>',
