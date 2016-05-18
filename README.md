@@ -345,6 +345,5 @@ It is framework independent (instead of the `extend Mage_Core_Helper_Abstract` w
 
 You can check it here - [AsyncHttpClient](https://github.com/Metrilo/Magento-Plugin/blob/master/app/code/community/Metrilo/Analytics/Helper/AsyncHttpClient.php)
 
-
-
+---
 _For questions, ideas and critics you can open an issue here or write us to support@metrilo.com_
