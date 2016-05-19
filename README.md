@@ -142,6 +142,8 @@ var productParams = {
     }
   ]
 }
+
+metrilo.event('view_product', productParams);
 ```
 _Consider escaping the url strings_
 
@@ -182,7 +184,7 @@ When a product is added to cart you can track "add to cart" event:
     ]
   };
 
-  metrilo.event('view_category', productParams);
+  metrilo.event('add_to_cart', productParams);
 ```
 _Consider escaping the url strings_
 
