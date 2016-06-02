@@ -213,6 +213,13 @@ When a user goes to the checkout page, you should track "checkout start" event a
 metrilo.event('checkout_start');
 ```
 
+##### Page view #####
+
+Static page views this way:
+```javascript
+metrilo.event('pageview', 'FAQ');
+```
+
 3.8. Checkout delivery, Checkout payment, Checkout confirm (_Not required_)
 
 If those events bring value to your business you can track them as follows.
