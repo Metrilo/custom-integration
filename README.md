@@ -87,7 +87,7 @@ var orderParams = {
         // option_id: '4556',
         // option_price: 134.50
         name: 'Cool sunglasses',
-        url: 'http:\/\/fanstore-johnybravo.com\/product\/coolsunglasses',
+        url: 'http://fanstore-johnybravo.com/product/coolsunglasses',
         quantity: 1
      },
      {
@@ -97,7 +97,7 @@ var orderParams = {
         // option_id: '4556',
         // option_price: 134.50
         name: 'Black T-shirt',
-        url: 'http:\/\/fanstore-johnybravo.com\/product\/blacktshirt',
+        url: 'http://fanstore-johnybravo.com/product/blacktshirt',
         quantity: 1
      }
   ],
@@ -129,8 +129,8 @@ var productParams = {
   id: '312',
   price: 134.50,
   name: 'Cool sunglasses',
-  url: 'http:\/\/fanstore-johnybravo.com\/product\/coolsunglasses',
-  image_url: 'http:\/\/fanstore-johnybravo.com\/product\/coolsunglasses\/coolsunglasses.jpg',
+  url: 'http://fanstore-johnybravo.com/product/coolsunglasses',
+  image_url: 'http://fanstore-johnybravo.com/product/coolsunglasses/coolsunglasses.jpg',
   categories: [
     {
       id: '9912',
@@ -170,8 +170,8 @@ When a product is added to cart you can track "add to cart" event:
     // option_id: '4556',
     // option_price: 134.50
     name: 'Cool sunglasses',
-    url: 'http:\/\/fanstore-johnybravo.com\/product\/coolsunglasses',
-    image_url: 'http:\/\/fanstore-johnybravo.com\/product\/coolsunglasses\/coolsunglasses.jpg',
+    url: 'http://fanstore-johnybravo.com/product/coolsunglasses',
+    image_url: 'http://fanstore-johnybravo.com/product/coolsunglasses/coolsunglasses.jpg',
     categories: [
       {
         id: '9912',
@@ -269,7 +269,7 @@ var orderParams = {
         // option_id: '4556',
         // option_price: 134.50
         name: 'Cool sunglasses',
-        url: 'http:\/\/fanstore-johnybravo.com\/product\/coolsunglasses',
+        url: 'http://fanstore-johnybravo.com/product/coolsunglasses',
         quantity: 1
      },
      {
@@ -279,7 +279,7 @@ var orderParams = {
         // option_id: '4556',
         // option_price: 134.50
         name: 'Black T-shirt',
-        url: 'http:\/\/fanstore-johnybravo.com\/product\/blacktshirt',
+        url: 'http://fanstore-johnybravo.com/product/blacktshirt',
         quantity: 1
      }
   ],
