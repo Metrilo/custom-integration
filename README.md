@@ -1,3 +1,4 @@
+
 ## Metrilo custom integration tutorial ##
 
 _This guide is from developers for developers. If your are not a developer, please find one and come back later :)_
@@ -53,6 +54,17 @@ var identifyParams = { name: 'Johny Bravo', first_name: 'Johny', last_name: 'Bra
 metrilo.identify('johnybravo@gmail.com', identifyParams);
 ```
 _First name and last name are not required_
+
+###### Identify with subscription status ######
+If you want to pass subscription status alongside the other user variables. And this status is synchronized with Metrilo unsubscribe flag for e-mail campaigns you can do it as follows:
+```javascript
+var identifyParams = {
+  name: 'Johny Bravo', first_name: 'Johny', last_name: 'Bravo',
+  email: 'johnybravo@gmail.com', subscribed: true /* false */ };
+
+metrilo.identify('johnybravo@gmail.com', identifyParams);
+```
+_Consider synchronization with Metrilo email unsubscribes if you are going to use this_
 
 ### Tracking events ###
 
