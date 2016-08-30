@@ -239,7 +239,7 @@ metrilo.event('checkout_payment');
 metrilo.event('checkout_confirm');
 ```
 
-* Custom event (something not listed above)
+* Custom event (anything custom you want to track). You can change 'custom_event' with any appropriate string.
 ```javascript
 metrilo.event('custom_event');
 ```
