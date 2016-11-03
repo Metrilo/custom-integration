@@ -251,6 +251,11 @@ metrilo.event('checkout_payment');
 metrilo.event('checkout_confirm');
 ```
 
+* Custom event (anything custom you want to track). You can change 'custom_event' with any appropriate string.
+```javascript
+metrilo.event('custom_event');
+```
+
 ## Back-end Metrilo integration ##
 
 You should integrate your back-end with Metrilo for two main reasons:
