@@ -368,7 +368,7 @@ We have PHP implementation of a [lightweight async client](https://github.com/Me
 
 It is framework independent (instead of the `extend Mage_Core_Helper_Abstract` which can be removed without breaking the code).
 
-You can check it here - [AsyncHttpClient](https://github.com/Metrilo/Magento-Plugin/blob/master/app/code/community/Metrilo/Analytics/Helper/AsyncHttpClient.php)
+You can check it here - [AsyncHttpClient](https://github.com/Metrilo/Magento-Plugin/blob/master/app/code/community/Metrilo/Analytics/Helper/Asynchttpclient.php)
 
 ---
 _For questions, ideas and critics you can open an issue here or write us to support@metrilo.com_
