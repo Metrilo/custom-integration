@@ -158,6 +158,20 @@ When a user lands on a category or a multiproduct listing page you can track vie
 
   metrilo.event('view_category', categoryParams);
 ```
+
+##### View article #####
+When a user lands on article/blogpost page
+
+```javascript
+  var articleParams = {
+    id: '1023',
+    name: 'Wearing sunglasses at night',
+    url: 'http://fanstore-johnybravo.com/blog/wearing-sunglasses-at-night'
+  };
+
+  metrilo.event('view_article', articleParams);
+```
+
 ##### Add to cart #####
 
 When a product is added to cart you can track "add to cart" event:
