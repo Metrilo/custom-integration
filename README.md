@@ -54,6 +54,13 @@ metrilo.identify('johnybravo@gmail.com', identifyParams);
 ```
 _First name and last name are not required_
 
+In addition to the `identifyParams` you can include the `tags` key with array of applied tags as follows:
+```javascript
+var identifyParams = { name: 'Johny Bravo', first_name: 'Johny', last_name: 'Bravo', email: 'johnybravo@gmail.com', tags: ['early_subscriber'] };
+
+metrilo.identify('johnybravo@gmail.com', identifyParams);
+```
+
 ### Tracking events ###
 
 The main events that are supported by the Metrilo library are: order, view product, view category, add to cart, remove from cart, view cart, page view, checkout start.
