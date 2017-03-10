@@ -339,7 +339,7 @@ var eventsJson = {
        },
        // !!! orderParams from the order strucure above !!!
        params: orderParams,
-       time: 1463500152000 // !!! The order created timestamp (UNIX) !!!
+       time: 1463500152000 // !!! The order created timestamp (UNIX) multiplied by 1000 (to include milliseconds precision) !!!
        uid: 'johnybravo@gmail.com' // !!! Again identification for user !!!
        use_ip: '127.0.0.1' // Or the user ip address if you have it
     }
