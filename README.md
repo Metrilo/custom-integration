@@ -367,7 +367,7 @@ ksort($events);
 // Encode the array
 $eventsJson = json_encode($events);
 // Encode using Base64
-$basedCall = base64_encode($events);
+$basedCall = base64_encode($eventsJson);
 // Finally build MD5 signature with the $basedCall concatenated with <YOUR_API_SECRET_HERE>
 $signature = md5($basedCall."<YOUR_API_SECRET_HERE>");
 // And with $signature and $basedCall build the final request
