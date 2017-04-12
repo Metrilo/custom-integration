@@ -238,7 +238,9 @@ metrilo.event('checkout_start');
 
 Static page views this way:
 ```javascript
-metrilo.event('pageview', 'FAQ');
+var pageViewed = { uri: 'http://fanstore-johnybravo.com/pages/about-us', page_title: 'About Us' };
+
+metrilo.event('pageview', pageViewed);
 ```
 
 3.8. Checkout delivery, Checkout payment, Checkout confirm (_Not required_)
