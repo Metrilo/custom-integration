@@ -56,8 +56,13 @@ _First name and last name are not required_
 
 In addition to the `identifyParams` you can include the `tags` key with array of applied tags as follows:
 ```javascript
-var identifyParams = { name: 'Johny Bravo', first_name: 'Johny', last_name: 'Bravo', email: 'johnybravo@gmail.com', tags: ['early_subscriber'] };
-
+var identifyParams = { 
+  name: 'Johny Bravo', 
+  first_name: 'Johny', 
+  last_name: 'Bravo', 
+  email: 'johnybravo@gmail.com', 
+  tags: ['early_subscriber'] 
+};
 metrilo.identify('johnybravo@gmail.com', identifyParams);
 ```
 
