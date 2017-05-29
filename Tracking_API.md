@@ -4,10 +4,9 @@
 'X-Metracker-Digest' header must be provided within each request, built as shown below.
 
 ```ruby
-Base64.encode64(
-  OpenSSL::HMAC.digest(
-    OpenSSL::Digest.new('sha256'), api_secret, params.to_json)
-).strip
+hmac_digest = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha256'), api_secret, params.to_json)
+
+x_metracker_digest = Base64.encode64(hmac_digest)
 ```
 
 ### 2. API calls ###
