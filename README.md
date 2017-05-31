@@ -248,6 +248,13 @@ var pageViewed = { uri: 'http://fanstore-johnybravo.com/pages/about-us', page_ti
 metrilo.event('pageview', pageViewed);
 ```
 
+##### Apply tags #####
+
+Applying tags to the current visitor:
+```javascript
+metrilo.event('apply_tags', { tags: ["tag1", "tag2"] });
+```
+
 3.8. Checkout delivery, Checkout payment, Checkout confirm (_Not required_)
 
 If those events bring value to your business you can track them as follows.
