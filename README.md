@@ -112,7 +112,18 @@ var orderParams = {
         // option_price: 134.50
         name: 'Black T-shirt',
         url: 'http://fanstore-johnybravo.com/product/blacktshirt',
-        quantity: 1
+        quantity: 1,
+        // categories could be passed (optionally)
+        categories: [
+          {
+            id: '11556',
+            name: 'Clothes'
+          },
+          {
+            id: '11137',
+            name: 'Fashion'
+          }
+        ]
      }
   ],
   coupons: ['EASTER15OFF'],
@@ -322,7 +333,18 @@ var orderParams = {
         // option_price: 134.50
         name: 'Black T-shirt',
         url: 'http://fanstore-johnybravo.com/product/blacktshirt',
-        quantity: 1
+        quantity: 1,
+        // categories could be passed (optionally)
+        categories: [
+          {
+            id: '11556',
+            name: 'Clothes'
+          },
+          {
+            id: '11137',
+            name: 'Fashion'
+          }
+        ]
      }
   ],
   coupons: ['EASTER15OFF'],
