@@ -54,13 +54,18 @@ metrilo.identify('johnybravo@gmail.com', identifyParams);
 ```
 _First name and last name are not required_
 
-In addition to the `identifyParams` you can include the `tags` key with array of applied tags as follows, company and country:
+In addition to the `identifyParams` you can include:
+* `subscribed` boolean field to let Metrilo know if the customer is subscribed to receive emails
+* `tags` key with array of tags to apply
+* company
+* country
 ```javascript
 var identifyParams = {
   name: 'Johny Bravo',
   first_name: 'Johny',
   last_name: 'Bravo',
   email: 'johnybravo@gmail.com',
+  subscribed: true,
   tags: ['early_subscriber'],
   company: 'Metrilo',
   country: 'US'
