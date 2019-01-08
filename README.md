@@ -428,11 +428,9 @@ You can choose suitable client for your environment to POST it (CURL, some rest 
 
 **We suggest making those calls fire-and-forget so they don't block the normal back-end flows on error or timeout.**
 
-We have PHP implementation of a [lightweight async client](https://github.com/Metrilo/Magento-Plugin/blob/master/app/code/community/Metrilo/Analytics/Helper/Asynchttpclient.php) we use in our Magento plugin based on [fsockopen](http://php.net/manual/en/function.fsockopen.php)
+We have PHP implementation of a [lightweight async client](https://github.com/Metrilo/metrilo-magento1-integration/blob/staging/app/code/community/Metrilo/Analytics/Helper/Requestclient.php) we use in our Magento plugin based on libCurl.
 
 It is framework independent (instead of the `extend Mage_Core_Helper_Abstract` which can be removed without breaking the code).
-
-You can check it here - [AsyncHttpClient](https://github.com/Metrilo/Magento-Plugin/blob/master/app/code/community/Metrilo/Analytics/Helper/Asynchttpclient.php)
 
 ---
 _For questions, ideas and critics you can open an issue here or write us to support@metrilo.com_
