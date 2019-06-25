@@ -320,7 +320,7 @@ Unlike the old `view_product` call, the `viewProduct` one in the new tracking ac
   
   
   // NEW TRACKING
-  metrilo.checkout()
+  metrilo.checkout();
 ```
 
 *viewCart*
