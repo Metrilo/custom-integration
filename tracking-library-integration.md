@@ -54,6 +54,7 @@ The tracking events which the tracking library supports are:
 * [viewProduct](#viewProduct)
 * [addToCart](#addToCart)
 * [removeFromCart](#removeFromCart)
+* [checkout](#checkout)
 * [applyTags](#applyTags)
 * [customEvent](#customEvent)
 
@@ -128,6 +129,13 @@ Visitor removes a product from the cart.
   var quantity = 1; // The quantity of removed items
 
   metrilo.removeFromCart(productId, quantity);
+```
+
+#### checkout ####
+Visitor started the checkout process.
+
+```javascript
+  metrilo.checkout();
 ```
 
 #### applyTags ####
@@ -298,12 +306,21 @@ Unlike the old `view_product` call, the `viewProduct` one in the new tracking ac
   var productParams = { id: '312' }
   metrilo.event('remove_from_cart', productParams);
 
-
   // NEW TRACKING
   var productId = '312'; // The ID of the removed product
   var quantity = 1; // The quantity of the removed items
 
   metrilo.removeFromCart(productId, quantity);
+```
+
+*checkout*
+```javascript
+  // OLD TRACKING
+  metrilo.event('checkout_start');
+  
+  
+  // NEW TRACKING
+  metrilo.checkout()
 ```
 
 *viewCart*
