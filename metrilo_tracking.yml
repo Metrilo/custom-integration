@@ -1,0 +1,1063 @@
+openapi: 3.0.1
+info:
+  version: 1.0.0
+  title: Metrilo tracking API
+  description: Metrilo analytics tracking API
+  contact:
+    name: Metrilo
+    email: support@metrilo.com
+    url: 'https://www.metrilo.com'
+servers:
+  - url: https://track.metrilo.com/v1
+paths:
+  /article/view:
+    post:
+      description: Visitor has landed on an article page.
+      operationId: viewArticleOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/viewArticleOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /cart/add:
+    post:
+      description: Visitor has added an item to their cart.
+      operationId: addToCartOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/cartOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /cart/remove:
+    post:
+      description: Visitor has removed an item from their cart.
+      operationId: removeFromCartOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/cartOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /category:
+    post:
+      description: Adds a new category or updates an existing one in Metrilo.
+      operationId: categoryOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/categoryOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /category/batch:
+    post:
+      description: Adds multiple categories or updates existing ones in Metrilo.
+      operationId: categoryBatchOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/categoryBatchOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+
+
+  /category/view:
+    post:
+      description: Visitor has opened category page.
+      operationId: viewCategoryOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/viewCategoryOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /checkout:
+    post:
+      description: A visitor started the checkout process.
+      operationId: checkoutOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/checkoutOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /custom:
+    post:
+      description: Push custom event to the tracking endpoint.
+      operationId: customOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/customOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /customer:
+    post:
+      description: Adds a new customer or updates an existing one in Metrilo.
+      operationId: customerOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/customerOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /customer/batch:
+    post:
+      description: Adds multiple customers or updates existing ones in Metrilo.
+      operationId: customerBatchOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/customerBatchOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /order:
+    post:
+      description: Adds a new order or updates an existing one in Metrilo.
+      operationId: orderOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/orderOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /order/batch:
+    post:
+      description: Adds multiple orders or updates existing ones in Metrilo.
+      operationId: orderBatchOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/orderBatchOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /page/land:
+    post:
+      description: Land
+      operationId: landOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/landOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /page/view:
+    post:
+      description: Visitor has opened a common page.
+      operationId: pageviewOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/pageviewOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /product:
+    post:
+      description: Adds a new product or updates an existing one in Metrilo.
+      operationId: productOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/productOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /product/batch:
+    post:
+      description: Adds multiple products or updates existing ones in Metrilo.
+      operationId: productBatchOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/productBatchOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /product/view:
+    post:
+      description: Visitor has opened a product page.
+      operationId: viewProductOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/viewProductOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /search:
+    post:
+      description: |
+        Visitor has searched in the shop.
+
+        NOTE: This supports only a plain query string without furter filtering.
+      operationId: searchOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/searchOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /visitor/apply-tags:
+    post:
+      description: Adds tags to a visitor.
+      operationId: applyTagsОperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/applyTagsOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /visitor/identify:
+    post:
+      description: Identifies current visitor explicitly by email.
+      operationId: identificationOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/identificationOperationObject'
+      responses:
+        '204':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+
+components:
+  responses:
+    success:
+      description: Success response.
+    errorBadRequest:
+      description: Bad request from client.
+    errorUnauthorized:
+      description: Project token is invalid.
+    errorPaymentRequired:
+      description: Project requires payment.
+    errorForbidden:
+      description: The IP that the request came from is ignored.
+    internalServerError:
+      description: Error from server while processing request.
+    badGateway:
+      description: Error from server accepting request.
+    error:
+      description: Error response.
+
+  schemas:
+    basicBackendObject:
+      type: object
+      required:
+        - time
+        - token
+      properties:
+        time:
+          type: integer
+          description: Integer representation of the event time (milliseconds from 1970).
+          example: 1518004715732
+        token:
+          type: string
+          description: Shop API token.
+          example: ccc111ddddaaaaac
+        platform:
+          type: string
+          description: Shop platform versioning.
+          example: Wordpress 4.2.7 / Woocommerce 3.5
+        pluginVersion:
+          type: string
+          description: Metrilo plugin version.
+          example: 1.1.0
+    basicFrontendObject:
+      type: object
+      description: Only one of the two fields must be defined - "visitorId" or "visitorEmail".
+      required:
+        - time
+        - token
+      properties:
+        time:
+          type: integer
+          description: Integer representation of the JS Date class (milliseconds from 1970).
+          example: 1518004715732
+        token:
+          type: string
+          description: Shop API token.
+          example: ccc111ddddaaaaac
+        visitorId:
+          type: string
+          description: Unique identifier of the visitor session (42 hexadecimal digits).
+          example: ef4451235f823d04df2a4a7a6620e1de8bbde8a5ea
+        visitorEmail:
+          type: string
+          description: After identification call "visitorId" is replaced with this field. This has precendence over "visitorId".
+          example: johny@bravo.com
+        trackingLibraryVersion:
+          type: string
+          description: Metrilo tracking library version.
+          example: 1.0.0
+    categoryObject:
+      allOf:
+        - $ref: '#/components/schemas/categoryIdObject'
+        - required:
+            - name
+          properties:
+            name:
+              type: string
+              description: Category display name in the shop.
+              example: Clothing
+            url:
+              type: string
+              description: Landing page for the shop category.
+              example: 'http://shop-tavan.customerboard.co/cagetory/clothing'
+    customerObject:
+      allOf:
+        - $ref: '#/components/schemas/visitorIdentityObject'
+        - type: object
+          required:
+            - createdAt
+          properties:
+            createdAt:
+              type: integer
+              description: Integer representation of the time the customer was created (milliseconds from 1970).
+              example: 1518004715732
+            firstName:
+              type: string
+              description: Customer's first name.
+              example: Johny
+            lastName:
+              type: string
+              description: Customer's last name.
+              example: Bravo
+            subscribed:
+              type: boolean
+              description: If the user has opted in for receiving emails.
+              example: true
+            tags:
+              type: array
+              items:
+                  type: string
+                  description: Tag labels that are assigned to users in the Metrilo application. (tags are merged, not overwritten)
+                  example:
+                    - early_subscriber
+                    - big_spender
+    landObject:
+      description: Visitor's session meta information. This one is initialized on the first shop page and shows how the visitor entered the shop.
+      type: object
+      required:
+        - currentUrl
+        - sourceUrl
+      properties:
+        currentUrl:
+          type: string
+          description: Shop landing page URL.
+          example: 'http://shop-tavan.customerboard.co'
+        sourceUrl:
+          type: string
+          description: Which URL referred the visitor to the current page.
+          example: 'https://www.google.bg/search?q=laptops'
+    orderObject:
+      type: object
+      required:
+        - id
+        - createdAt
+        - amount
+        - products
+        - status
+      properties:
+        id:
+          type: string
+          description: Unique ID of the order in the shop's database.
+          example: 14
+        createdAt:
+          type: integer
+          description: Integer representation of the time the order was created (milliseconds from 1970).
+          example: 1518004715732
+        email:
+          type: string
+          description: Customer's email address. Used to link to an existing customer.
+          example: johnybravo@metrilo.com
+        amount:
+          type: number
+          description: Total amount of the order, including all shipping expenses, tax and the price of items.
+          example: 308.42
+        coupons:
+          type: array
+          items:
+            type: string
+          description: Coupons applied to the order. Stored case insensitive.
+          example:
+            - EASTER15OFF
+        status:
+          type: string
+          description: State of the order.
+          example: completed
+        products:
+          type: array
+          items:
+            type: object
+            required:
+              - productId
+              - quantity
+            properties:
+              productId:
+                type: string
+                description: The ID of the product in the shop's database.
+                example: 91
+              quantity:
+                type: number
+                description: How many pieces of the product the visitor has added to the cart.
+                example: 2
+        billing:
+          type: object
+          description: Order's billing information.
+          properties:
+            firstName:
+              type: string
+              description: Customer's first name.
+              example: Johny
+            lastName:
+              type: string
+              description: Customer's last name.
+              example: Bravo
+            address:
+              type: string
+              description: Full billing address.
+              example: 15 Somewhere Road, Brynmenyn
+            city:
+              type: string
+              description: The exact city of the address.
+              example: Bridgend
+            countryCode:
+              type: string
+              description: Billing country 2-letter ISO code.
+              example: CA
+            phone:
+              type: string
+              description: Phone number to contact for further details about the order.
+              example: 01559 032133
+            postcode:
+              type: string
+              description: Postcode for delivery and billing.
+              example: NW1 4DF
+            paymentMethod:
+              type: string
+              description: How the visitor will pay for the item(s), e.g. paypal, check, etc.
+              example: PayPal
+    productObject:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+          description: Category ID-s of the product in the shop's database
+          example: ['42', '13']
+        id:
+          type: string
+          description: The ID of the product in the shop's database.
+          example: '91'
+        sku:
+          type: string
+          description: Unique product identifier from the shop.
+          example: CM01-R
+        imageUrl:
+          type: string
+          description: Absolute URL to the cover image of the product.
+          example: 'http://shop-tavan.customerboard.co/wp-content/uploads/2018/02/91.jpg'
+        name:
+          type: string
+          description: 'The name of the product, as displayed in the shop.'
+          example: Rare unique blue shirt
+        price:
+          type: number
+          description: Price of the product. (Price is required, if there's no option defined.)
+          example: 23.65
+        url:
+          type: string
+          description: Landing page of the product within the shop.
+          example: 'http://shop-tavan.customerboard.co/product/rare-unique-blue-shirt/'
+        options:
+          # Since options might be deleted from a store system, but still be present in orders.
+          # Based on discussion https://docs.google.com/document/d/1wbjOqfH_-vMQRw8X3DrZ5bBZ7muUIZoDXQQZVM6-cQM/edit#heading=h.u6chf4mjkopt
+          type: array
+          description: Product options/variations. (options are merged, not overwritten)
+          items:
+            type: object
+            description: 'Product option (size, color, variant, etc.) is not mandatory.'
+            required:
+              - id
+              - name
+              - price
+            properties:
+              id:
+                type: string
+                description: The ID of the product option in the shop's database.
+                example: '52'
+              sku:
+                type: string
+                description: Unique idenrifier from the shop.
+                example: CM01-W
+              name:
+                type: string
+                description: The name/title of the option as displayed in the shop.
+                example: On Sale - size XS
+              price:
+                type: number
+                description: Price of the option for this product.
+                example: 15.99
+              imageUrl:
+                type: string
+                description: Absolute URL to the cover image of the product.
+                example: 'http://shop-tavan.customerboard.co/wp-content/uploads/2018/02/91.jpg'
+    visitorIdentityObject:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          description: Visitor's email address.
+          example: johnybravo@metrilo.com
+    categoryIdObject:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: Unique ID of category in the shop database.
+          example: 12
+    applyTagsOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicFrontendObject'
+        - type: object
+          required:
+            - params
+          properties:
+            params:
+              type: object
+              properties:
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  description: Tag labels that are assingned to users in the Metrilo application.
+                  example:
+                    - early_subscriber
+                    - big_spender
+    categoryOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicBackendObject'
+        - required:
+            - params
+          properties:
+            params:
+              allOf:
+                - $ref: '#/components/schemas/categoryObject'
+    categoryBatchOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicBackendObject'
+        - type: object
+          required:
+            - batch
+          properties:
+            batch:
+              type: array
+              items:
+                $ref: '#/components/schemas/categoryObject'
+    checkoutOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicFrontendObject'
+    customOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicFrontendObject'
+        - type: object
+          required:
+            - params
+          properties:
+            params:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: A custom string that the shop sends to Metrilo.
+                  example: view_cart_action
+    customerOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicBackendObject'
+        - type: object
+          required:
+            - params
+          properties:
+            params:
+              allOf:
+                - $ref: '#/components/schemas/customerObject'
+    customerBatchOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicBackendObject'
+        - type: object
+          required:
+            - batch
+          properties:
+            batch:
+              type: array
+              items:
+                $ref: '#/components/schemas/customerObject'
+    identificationOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicFrontendObject'
+        - required:
+            - params
+          properties:
+            params:
+              allOf:
+                - $ref: '#/components/schemas/visitorIdentityObject'
+    landOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicFrontendObject'
+        - required:
+            - params
+          properties:
+            params:
+              allOf:
+                - $ref: '#/components/schemas/landObject'
+    orderOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicBackendObject'
+        - required:
+            - params
+          properties:
+            params:
+              allOf:
+                - $ref: '#/components/schemas/orderObject'
+    orderBatchOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicBackendObject'
+        - required:
+            - params
+          properties:
+            batch:
+              type: array
+              items:
+                $ref: '#/components/schemas/orderObject'
+    pageviewOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicFrontendObject'
+        - required:
+            - params
+          properties:
+            params:
+              type: object
+              required:
+                - url
+              properties:
+                name:
+                  type: string
+                  description: Title of the shop page that the visitor navigated to.
+                  example: Homepage
+                url:
+                  type: string
+                  description: Absolute URL linking the the visited page.
+                  example: 'http://shop-tavan.customerboard.co'
+    productOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicBackendObject'
+        - required:
+            - params
+          properties:
+            params:
+              allOf:
+                - $ref: '#/components/schemas/productObject'
+    productBatchOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicBackendObject'
+        - required:
+            - params
+          properties:
+            batch:
+              type: array
+              items:
+                $ref: '#/components/schemas/productObject'
+    searchOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicFrontendObject'
+        - required:
+            - params
+          properties:
+            params:
+              type: object
+              required:
+                - query
+                - url
+              properties:
+                query:
+                  type: string
+                  description: Search query string that the visitor entered in the search form.
+                  example: a plant
+                url:
+                  type: string
+                  description: The URL that the visitor landed when submiting the search form.
+                  example: 'http://shop-tavan.customerboard.co/?s=a+plant'
+    cartOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicFrontendObject'
+        - required:
+            - params
+          properties:
+            params:
+              type: object
+              required:
+                - productId
+                - quantity
+              properties:
+                productId:
+                  type: string
+                  description: The ID of the product in the shop's database.
+                  example: "91"
+                quantity:
+                  type: number
+                  description: How many pieces of the product were added/removed.
+                  example: 3
+    viewArticleOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicFrontendObject'
+        - type: object
+          required:
+            - params
+          properties:
+            params:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+                  description: Unique ID of article resource in the shop database.
+                  example: 41
+                name:
+                  type: string
+                  description: Article display name in the shop.
+                  example: How to buy better stuff
+                url:
+                  type: string
+                  description: Landing page for the article resource.
+                  example: http://shop-tavan.customerboard.co/2018/02/01/how-to-buy-better-stuff
+    viewCategoryOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicFrontendObject'
+        - required:
+            - params
+          properties:
+            params:
+              allOf:
+                - $ref: '#/components/schemas/categoryIdObject'
+    viewProductOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicFrontendObject'
+        - required:
+            - params
+          properties:
+            params:
+              type: object
+              required:
+                - productId
+              properties:
+                productId:
+                  type: string
+                  description: The ID of the product in the shop's database.
+                  example: 91
