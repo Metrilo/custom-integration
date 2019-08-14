@@ -8,7 +8,7 @@ info:
     email: support@metrilo.com
     url: 'https://www.metrilo.com'
 servers:
-  - url: https://track.metrilo.com/v1
+  - url: https://trk.mtrl.me
 paths:
   /article/view:
     post:
