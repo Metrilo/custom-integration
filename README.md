@@ -1,6 +1,7 @@
 
 
 
+
 # Metrilo custom integration tutorial
 
 **This guide is from developers for developers. If your are not a developer, please find one and come back later :)**
@@ -34,11 +35,13 @@ In general we can distinguish 3 types of endpoints according to their purpose. A
 
 All of the endpoints can import multiple records at once. More detailed information about what data they require you can find in the OpenAPI documentation mentioned above.
 
-### Examples of when to use them
-* Lets say you have categories shirts, jeans and hats -> call **/category/batch** with the required information about each category
-* Lets say you have products T-shirt, short sleeve shirt and Long sleeve shirt -> call **/product/batch** with the required information about each product
-* Lets say you have customers Marry, Molly and Jane -> call **/customer/batch** with the required information about each customer
-* Lets say you have orders #100, #101 and #102 -> call **/order/batch** with the required information about each order
+### Examples of when to use these endpoints
+| Lets say you have                                          | you have to call ... with the required data about each resource |
+| :--------------------------------------------------------- | :-------------------------------------------------------------- |
+| categories shirts, jeans and hats                          | /category/batch                                                 |
+| products T-shirt, short sleeve shirt and Long sleeve shirt | /product/batch                                                  |
+| customers Marry, Molly and Jane                            | /customer/batch                                                 |
+| orders #100, #101 and #102                                 | /order/batch                                                    |
 
 
 ## Frontend integration
@@ -67,18 +70,19 @@ To notify Metrilo about the customer acations you have to send the required data
 Since you will most probably use the **javascript library** there is no need to call directly the endpoints.
 
 ### Examples of when to use the javascript library
-Customer actions and what you have to do with the loaded library(the params are not included):
-* visits the Homepage -> call metrilo.viewPage
-* visits an article page -> call metrilo.viewArticle
-* visits a category page -> call metrilo.viewCategory
-* visits a product page -> call metrilo.viewProduct
-* visits another page (e.g. /thank-you) -> call metrilo.viewPage
-* types something in the search bar -> call metrilo.search
-* adds a product to his cart -> call metrilo.addToCart
-* removes a product to his cart -> call metrilo.removeFromCart
-* checks the content of his cart -> call metrilo.viewPage
-* goes to the checkout page -> call metrilo.checkout
-* enters his email in some html form -> call metrilo.identify
+| a customer                            | you have to call ... with the required params |
+| :-------------------------------------| :-------------------------------------------- |
+| visits the Homepage                   | metrilo.viewPage                              |
+| visits an article page                | metrilo.viewArticle                           |
+| visits a category page                | metrilo.viewCategory                          |
+| visits a product page                 | metrilo.viewProduct                           |
+| visits another page (e.g. /thank-you) | metrilo.viewPage                              |
+| types something in the search bar     | metrilo.search                                |
+| adds a product to his cart            | metrilo.addToCart                             |
+| removes a product to his cart         | metrilo.removeFromCart                        |
+| checks the content of his cart        | metrilo.viewPage                              |
+| goes to the checkout page             | metrilo.checkout                              |
+| enters his email in some html form    | metrilo.identify                              |
 
 
 
@@ -103,10 +107,12 @@ However, a simple rule is any time you create or update a **category**, **produc
 More detailed information about what data they require you can find in the OpenAPI documentation mentioned above.
 
 ### Example of when to use these endpoints:
-* a customer signs up for first time -> call **/customer** to create it
-* a customer profile is updated -> call **/customer** to update it
-* a new category is added to a product -> call **/product** to update its categories
-* a new product is created -> call **/product** to create it
-* a new order is made -> call **/order** to create it
-* an order details are changed -> call **/order** to update it
-* a customer doesn't sign up, but makes an order just by filling in his email(guest customer) -> call **/customer** and then **/order** to create both resources
+| when                                                                                        | you have to call ... with the required data        |
+| :------------------------------------------------------------------------------------------ | :------------------------------------------------- |
+| a customer signs up for first time                                                          | /customer to create it                             |
+| a customer profile is updated                                                               | /customer to update it                             |
+| a new category is added to a product                                                        | /product to update its categories                  |
+| a new product is created                                                                    | /product to create it                              |
+| a new order is made                                                                         | /order to create it                                |
+| an order details are changed                                                                | /order to update it                                |
+| a customer doesn't sign up, but makes an order just by filling in his email(guest customer) | /customer and then /order to create both resources |
