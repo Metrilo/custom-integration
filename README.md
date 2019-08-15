@@ -1,5 +1,6 @@
 
 
+
 # Metrilo custom integration tutorial
 
 **This guide is from developers for developers. If your are not a developer, please find one and come back later :)**
@@ -15,18 +16,19 @@ There are 3 things you have to do to make Metrilo work on your website. These ar
 * [Backend integration](#backend-integration)
 
 ## Import
-Before doing any [Frontend](#frontend-integration) and [Backend](#backend-integration) integrations, you have to sync(import) your data with Metrilo. These is the **categories**, **products**, **customers** and **orders** you have on your website. Import of categories and products is **crucial** because the [Frontend integration](#frontend-integration) depends on it. Import of customers and orders is necessary only if you want to sync any historical data with Metrilo.
+Before doing any [Frontend](#frontend-integration) and [Backend](#backend-integration) integrations, you have to sync(import) your data with Metrilo. These is the **categories**, **products**, **customers** and **orders** you have on your website.
+:warning: Import of categories and products is **crucial** because the [Frontend integration](#frontend-integration) depends on it. Import of customers and orders is necessary only if you want to sync any historical data with Metrilo.
+:warning: The order in which the import must be done is categories -> products -> customers -> orders. This is because the orders are dependent on the customers and the products, and the products on the categories.
+
 
 ### Implementation
-To ease your life, we have made four endpoints which you could use.
+To ease your life, we have made four endpoints which you could use. You could use them to import a multiple records at once. Just keep the size of a single request **less than 5 MB**.
 
 #### Import endpoints
 * /product/batch
 * /category/batch
 * /customer/batch
 * /order/batch
-
-You could use them to import a multiple records at once. Just keep the size of a single request less than 5 MB. The order in which the import must be done is categories -> products -> customers -> orders. This is because the orders are dependent on the customers and the products, and the products on the categories.
 
 
 ## Frontend integration
@@ -49,7 +51,7 @@ For your convenience we have made a javascript library that will simplify callin
 * /visitor/apply-tags
 * /visitor/identify
 
-### Examples
+### Examples of when to use this endpoints
 Customer actions and what you have to do with the loaded library(the params are not included):
 * visits the Homepage -> call metrilo.viewPage
 * visits an article page -> call metrilo.viewArticle
@@ -62,11 +64,6 @@ Customer actions and what you have to do with the loaded library(the params are 
 * checks the content of his cart -> call metrilo.viewPage
 * goes to the checkout page -> call metrilo.checkout
 * enters his email in some html form -> call metrilo.identify
-
-### About the identify
-When a customer comes to the store and he is not logged in Metrilo treats him as an anonymous visitor. Metrilo adds a unique identifier to his session, so it could attribute his actions to this identifier. Once he provides his email (e.g. logs in, signs up, fills in a subscription form, makes an order, etc.) you have to call ```metrilo.identify(customerEmail)```. This will associate the unique identifier with the email. Moreover, all events that the visitor has while being an anonymous one will be merged with the events he has as identified (*if any). Keep in mind that the identify call must be done only once, the first time the visitor enters his email. If you are not sure that you have already called it, just check for the existence of email in the cookie named **cbuid**. If there is an email, no need to call it. This cookie contains either the unique identifier or the email and part of the identify function is to change the content  from the unique identifier to the email.
-
-**\*** sometimes customers might log out, use different devices, browsers or delete their cookies. Every time one of this happens Metrilo will create a new anonymous visitor with a new unique identifier. However, once the visitor identifies himself (enters his email and you call metrilo.identify) Metrilo will check for the existence of a customer with the entered email and if there is any, it will merge him with the anonymous visitor.
 
 
 ## Backend integration
@@ -85,7 +82,7 @@ However, a simple rule is any time you create or update a **category**, **produc
 * /customer
 * /order
 
-### Example of when you should use these endpoints:
+### Example of when to use these endpoints:
 * a customer signs up for first time -> call /customer to create it
 * a customer profile is updated -> call /customer to update it
 * a new category is added to a product -> call /product to update its categories
