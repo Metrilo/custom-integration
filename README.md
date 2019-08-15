@@ -18,6 +18,7 @@ In general we can distinguish 3 types of endpoints according to their purpose. A
 
 ## Import of resources
   Before doing any [Frontend](#frontend-integration) and [Backend](#backend-integration) integrations, you have to sync (import) your data with Metrilo. These is the **categories**, **products**, **customers** and **orders** you have in your database. Metrilo needs information about them, because these are the objects (resources) related to your customers actions.
+
 :warning: Keep in mind that:
   * Import of categories and products is **crucial** because the [Frontend integration](#frontend-integration) depends on it.
   * Import of customers and orders is necessary only if you want to sync any historical data with Metrilo.
