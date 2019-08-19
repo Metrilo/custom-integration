@@ -9,7 +9,7 @@ For more information about Metrilo and its features please visit [the official w
 ### Installing the JS library
 Insert the following script tag in the `<head>` tag of the page you want to track.
 ```
-<script type="text/javascript" src="https://tracking.metrilo.com/tracking.js?token=<YOUR_PROJECT_TOKEN>"></script>
+<script type="text/javascript" src="https://trk.mtrl.me/tracking.js?token=<YOUR_PROJECT_TOKEN>"></script>
 ```
 Consider the `<YOUR_PROJECT_TOKEN>` parameter - here you should put your project's API token, which you could find on the Settings page of your project in Metrilo.
 
@@ -81,7 +81,7 @@ Visitor has visited a shop page.
 ```
 
 #### viewArticle ####
-Visitor has landed on an article page.
+Visitor has visited an article page.
 
 ```javascript
   var articleId = '42'; // Unique ID of article resource in the shop's database.
@@ -94,7 +94,7 @@ Visitor has landed on an article page.
 ```
 
 #### viewCategory ####
-Visitor has opened a category page.
+Visitor has visited a category page.
 
 ```javascript
   var categoryId = '9912'; // Unique ID of category resource in the shop's database.
@@ -102,7 +102,7 @@ Visitor has opened a category page.
 ```
 
 #### viewProduct ####
-Visitor has opened a product page.
+Visitor has visited a product page.
 
 ```javascript
   var productId = '312'; // The ID of the product in the shop's database.
@@ -110,7 +110,7 @@ Visitor has opened a product page.
 ```
 
 #### addToCart ####
-Visitor adds a product to the cart.
+Visitor has added a product to the cart.
 
 ```javascript
   var productId = '312'; // The ID of the added product
@@ -120,7 +120,7 @@ Visitor adds a product to the cart.
 ```
 
 #### removeFromCart ####
-Visitor removes a product from the cart.
+Visitor has removed a product from the cart.
 
 ```javascript
   var productId = '312'; // The ID of the removed product
@@ -130,7 +130,7 @@ Visitor removes a product from the cart.
 ```
 
 #### checkout ####
-Visitor started the checkout process.
+Visitor has started the checkout process.
 
 ```javascript
   metrilo.checkout();

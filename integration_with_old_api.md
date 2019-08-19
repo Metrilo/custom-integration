@@ -8,8 +8,9 @@ _This guide is from developers for developers. If your are not a developer, plea
 We strongly recommend doing this on Staging/Beta environment first to make sure the integration is smooth and nothing breaks down.**
 
 Metrilo provides a javascript library for integration with your custom e-commerce solution.
-The same library is used for our Magento and Woocommerce plugins so they can be a valuable source when integrating Metrilo with your website. You can find them on:
-- [Magento Plugin](https://github.com/Metrilo/Magento-Plugin)
+The same library is used for our Magento and Woocommerce plugins so they can be a valuable resource when integrating Metrilo with your website. You can find them on:
+- [Magento 1 Plugin](https://github.com/Metrilo/Magento-Plugin)
+- [Magento 2 Plugin](https://github.com/Metrilo/metrilo-magento2-integration)
 - [Woocommerce Plugin](https://github.com/Metrilo/WooCommerce-Plugin)
 
 This guide consists of 2 parts:
