@@ -53,7 +53,7 @@ To notify Metrilo about the customer actions you have to send the required data 
 
 :warning: Keep in mind that:
 * if you try to call any [Frontend endpoint](#frontend-endpoints) for not existing resource in Metrilo, your request won't be processed.
-* if you have any caching, make sure not to cache any frontend events
+* if you have any caching, make sure not to cache any customer-action-specific calls. Such calls are add to cart, remove from cart, identify and apply tags.
 
 ### Frontend endpoints
 * /article/view
@@ -133,3 +133,4 @@ The following responses are valid for all of the endpoints.
 | 403 | The IP that the request came from is ignored. |  
 | 500 | Error from server while processing request. |  
 | 502 | Error from server accepting request. |  
+ч
