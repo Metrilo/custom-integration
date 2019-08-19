@@ -1,3 +1,4 @@
+
 # Metrilo custom integration tutorial
 
 **This guide is from developers for developers. If your are not a developer, please find one and come back later :)**
@@ -12,6 +13,7 @@ In general we can distinguish 3 types of endpoints according to their purpose. A
 * [Frontend events](#frontend-events)
 * [Backend events](#backend-events)
 
+<br/><br/>
 ## Import of resources
   Before doing any [Frontend](#frontend-events) and [Backend](#backend-events) events, you have to sync (import) your data with Metrilo. These are the **categories**, **products**, **customers** and **orders** you have in your database. Metrilo needs information about them, because these are the objects (resources) related to your customers actions.
 
@@ -42,7 +44,7 @@ All of the endpoints can import multiple records at once. More detailed informat
 | customers Marry, Molly and Jane                            | /customer/batch                                                 |
 | orders #100, #101 and #102                                 | /order/batch                                                    |
 
-
+<br/><br/>
 ## Frontend events
 When a customer of yours do some actions on your website you have to tell Metrilo about it. Such actions could be view a page, add a product to the cart, view a product, make a search, etc. These are the actions that will be saved in the customer's current session and on the base of which Metrilo will do its magic.
 
@@ -85,7 +87,7 @@ Since you will most probably use the **javascript library** there is no need to 
 | enter their email in some html form  | metrilo.identify                              |
 
 
-
+<br/><br/>
 ## Backend events
 When you create or update **categories**, **products**, **customers** or **orders** you have to notify Metrilo about it. These are the same objects (resources) you did import for, however here you can manage them one by one. To do this you can make a request to the relevant [Backend endpoint](#backend-endpoints) for the resource that was created/updated.
 
@@ -118,7 +120,7 @@ More detailed information about what data they require you can find in the OpenA
 | a customer doesn't sign up, but makes an order just by filling in his email(guest customer) | /customer and then /order to create both resources |
 
 
-
+<br/><br/>
 ## Responses from the endpoints
 The following responses are valid for all of the endpoints.
 
