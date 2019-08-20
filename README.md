@@ -1,436 +1,136 @@
-## Metrilo custom integration tutorial ##
 
-_This guide is from developers for developers. If your are not a developer, please find one and come back later :)_
-
-
-
-**:warning: :warning: :warning:
-We strongly recommend doing this on Staging/Beta environment first to make sure the integration is smooth and nothing breaks down.**
-
-Metrilo provides a javascript library for integration with your custom e-commerce solution.
-The same library is used for our Magento and Woocommerce plugins so they can be a valuable source when integrating Metrilo with your website. You can find them on:
-- [Magento Plugin](https://github.com/Metrilo/Magento-Plugin)
-- [Woocommerce Plugin](https://github.com/Metrilo/WooCommerce-Plugin)
-
-This guide consists of 2 parts:
-
-- [Front-end Metrilo integration](#front-end-metrilo-integration)
-- [Back-end Metrilo integration](#back-end-metrilo-integration)
-
-
-## Front-end Metrilo integration ##
-
-_You should add the Metrilo javascript snippet on every page you want to track!_
-
-#### Installing the javascript library ####
-
-Let's start by including the javascript snippet (bellow) right before closing the `head` tag.
-
-```
-<script type="text/javascript">
-window.metrilo||(window.metrilo=[]),window.metrilo.queue=[],window.metrilo.methods=["identify","track","event","pageview","purchase","debug","atr"],
-window.metrilo.skelet=function(e){return function(){a=Array.prototype.slice.call(arguments);a.unshift(e);window.metrilo.queue.push(a)}};
-for(var i=0;window.metrilo.methods.length>i;i++){var mthd=window.metrilo.methods[i];window.metrilo[mthd]=window.metrilo.skelet(mthd)}
-window.metrilo.load=function(e){var t=document,n=t.getElementsByTagName("script")[0],r=t.createElement("script");
-r.type="text/javascript";r.async=true;r.src="//t.metrilo.com/j/"+e+".js";n.parentNode.insertBefore(r,n)};
-metrilo.load("<YOUR_PROJECT_TOKEN>");
-</script>
-```
-
-Consider the `metrilo.load("<YOUR_PROJECT_TOKEN>")` line. Here you should put your project token. You can find it on the Settings page in the Metrilo web-site.
-
-#### Identify user ####
-
-Metrilo tracks anonymous user history and it is nice to notify Metrilo when you have customer details. The common use cases where identification could be done are:
-* After order, because each order contains customer details
-* After subscription for some resource on your web-site
-* After login
-
-The following example shows how identification works:
-```javascript
-var identifyParams = { name: 'Johny Bravo', first_name: 'Johny', last_name: 'Bravo', email: 'johnybravo@gmail.com' };
-
-metrilo.identify('johnybravo@gmail.com', identifyParams);
-```
-_First name and last name are not required_
-
-In addition to the `identifyParams` you can include:
-* `subscribed` boolean field to let Metrilo know if the customer is subscribed to receive emails
-* `tags` key with array of tags to apply
-* company
-* country
-```javascript
-var identifyParams = {
-  name: 'Johny Bravo',
-  first_name: 'Johny',
-  last_name: 'Bravo',
-  email: 'johnybravo@gmail.com',
-  subscribed: true,
-  tags: ['early_subscriber'],
-  company: 'Metrilo',
-  country: 'US'
-};
-metrilo.identify('johnybravo@gmail.com', identifyParams);
-```
-
-### Tracking events ###
-
-The main events that are supported by the Metrilo library are: order, view product, view category, add to cart, remove from cart, view cart, page view, checkout start.
-Optional events you can use are: checkout delivery, checkout payment, checkout confirm.
-
-You can track an event using the call
-```javascript
-metrilo.event('<event_type>', event_parameters);
-```
-You can pass multiple events on the same page.
-
-We will describe the parameters allowed and use cases for each event.
-
-##### Order #####
-
-When a user creates an order on your web-site you can send the following event from your javascript code.
-
-```javascript
-// Prepare the order parameters
-var orderParams = {
-  order_id: '12345678',
-  order_status: 'pending',
-  amount: 234.99,
-  shippint_amount: 0,
-  tax_amount: 23.50,
-  items: [
-     {
-        id: '312',
-        price: 134.50,
-        // For optional products you can use instead of price
-        // option_id: '4556',
-        // option_price: 134.50
-        name: 'Cool sunglasses',
-        url: 'http://fanstore-johnybravo.com/product/coolsunglasses',
-        quantity: 1
-     },
-     {
-        id: '148',
-        price: 100.49,
-        // For optional products you can use option price intead of price
-        // option_id: '4556',
-        // option_price: 134.50
-        name: 'Black T-shirt',
-        url: 'http://fanstore-johnybravo.com/product/blacktshirt',
-        quantity: 1,
-        // categories could be passed (optionally)
-        categories: [
-          {
-            id: '11556',
-            name: 'Clothes'
-          },
-          {
-            id: '11137',
-            name: 'Fashion'
-          }
-        ]
-     }
-  ],
-  coupons: ['EASTER15OFF'],
-  shipping_method: 'Free Shipping - Free',
-  payment_method: 'Cash On Delivery',
-  billing_phone: '+47 888 999 000',
-  billing_country: 'US',
-  billing_region: 'Alaska',
-  billing_postcode: '12345',
-  billing_address: 'Sesam Street 1',
-  billing_company: 'Johny&Friends'
-};
-// Identify customer so we know who is doing the order
-metrilo.identify('johnybravo@gmail.com', { name: 'Johny Bravo', email: 'johnybravo@gmail.com' });
-// Then call Metrilo API using the order parameters.
-metrilo.event('order', orderParams);
-```
-_Consider escaping the url strings_
-
-The coupons, billing, payment and shipping related parameters are not required.
-
-##### View product #####
-
-When the user lands on a product page you can track it as follows:
-
-```javascript
-var productParams = {
-  id: '312',
-  price: 134.50,
-  name: 'Cool sunglasses',
-  url: 'http://fanstore-johnybravo.com/product/coolsunglasses',
-  image_url: 'http://fanstore-johnybravo.com/product/coolsunglasses/coolsunglasses.jpg',
-  categories: [
-    {
-      id: '9912',
-      name: 'Accessories'
-    },
-    {
-      id: '8009',
-      name: 'Summer'
-    }
-  ]
-}
-
-metrilo.event('view_product', productParams);
-```
-_Consider escaping the url strings_
-
-##### View category #####
-When a user lands on a category or a multiproduct listing page you can track view category event as follows:
-
-```javascript
-  var categoryParams = {
-    id: '9912',
-    name: 'Accessories'
-  };
-
-  metrilo.event('view_category', categoryParams);
-```
-
-##### View article #####
-When a user lands on article/blogpost page
-
-```javascript
-  var articleParams = {
-    id: '1023',
-    name: 'Wearing sunglasses at night',
-    url: 'http://fanstore-johnybravo.com/blog/wearing-sunglasses-at-night'
-  };
-
-  metrilo.event('view_article', articleParams);
-```
-
-##### Add to cart #####
-
-When a product is added to cart you can track "add to cart" event:
-
-```javascript
-  var productParams = {
-    id: '312',
-    price: 134.50,
-    // For optional products you can use option price intead of price or allongside with it.
-    // option_id: '4556',
-    // option_price: 134.50
-    name: 'Cool sunglasses',
-    url: 'http://fanstore-johnybravo.com/product/coolsunglasses',
-    image_url: 'http://fanstore-johnybravo.com/product/coolsunglasses/coolsunglasses.jpg',
-    categories: [
-      {
-        id: '9912',
-        name: 'Accessories'
-      },
-      {
-        id: '8009',
-        name: 'Summer'
-      }
-    ]
-  };
-
-  metrilo.event('add_to_cart', productParams);
-```
-_Consider escaping the url strings_
-
-##### Remove from cart #####
-
-You can track "remove from cart" this way:
-```javascript
-var productParams = { id: '312' };
-
-metrilo.event('remove_from_cart', productParams);
-```
-
-##### View cart #####
-
-When a user views his cart you can track view cart event:
-
-```javascript
-metrilo.event('view_cart');
-```
-
-##### Checkout start #####
-
-When a user goes to the checkout page, you should track "checkout start" event as follows:
-
-```javascript
-metrilo.event('checkout_start');
-```
-
-##### Page view #####
-
-Static page views this way:
-```javascript
-var pageViewed = { uri: 'http://fanstore-johnybravo.com/pages/about-us', page_title: 'About Us' };
-
-metrilo.event('pageview', pageViewed);
-```
-
-##### Apply tags #####
-
-Applying tags to the current visitor:
-```javascript
-metrilo.event('apply_tags', { tags: ["tag1", "tag2"] });
-```
-
-3.8. Checkout delivery, Checkout payment, Checkout confirm (_Not required_)
-
-If those events bring value to your business you can track them as follows.
-
-* Checkout delivery
-```javascript
-metrilo.event('checkout_delivery');
-```
-
-* Checkout payment
-```javascript
-metrilo.event('checkout_payment');
-```
-
-* Checkout confirm
-```javascript
-metrilo.event('checkout_confirm');
-```
-
-* Custom event (anything custom you want to track). You can change 'custom_event' with any appropriate string.
-```javascript
-metrilo.event('custom_event');
-```
-
-## Back-end Metrilo integration ##
-
-You should integrate your back-end with Metrilo for two main reasons:
-
-- Importing orders from the database
-- Syncing order data. This means doing API call on creating and updating of the order.
-
-Back-end synchronization is important part of the implementation, since it gives opportunity to track changes to the order statuses.
-
-Make a back-end call when creating order is done on the client as well. It's ensuring that if an order sent from client fails for a reason we can have it from your back-end.
-
-1. The order JSON structure is similar to the front-end one. We will present it using PHP named arrays.
-
-So we have an `orderParams` array, containing 2 `items` (products, subscriptions, etc.)
-
-```javascript
-var orderParams = {
-  order_id: '12345678',
-  order_status: 'pending',
-  amount: 234.99,
-  shippint_amount: 0,
-  tax_amount: 23.50,
-  items: [
-     {
-        id: '312',
-        price: 134.50,
-        // For optional products you can use instead of price
-        // option_id: '4556',
-        // option_price: 134.50
-        name: 'Cool sunglasses',
-        url: 'http://fanstore-johnybravo.com/product/coolsunglasses',
-        quantity: 1
-     },
-     {
-        id: '148',
-        price: 100.49,
-        // For optional products you can use option price intead of price
-        // option_id: '4556',
-        // option_price: 134.50
-        name: 'Black T-shirt',
-        url: 'http://fanstore-johnybravo.com/product/blacktshirt',
-        quantity: 1,
-        // categories could be passed (optionally)
-        categories: [
-          {
-            id: '11556',
-            name: 'Clothes'
-          },
-          {
-            id: '11137',
-            name: 'Fashion'
-          }
-        ]
-     }
-  ],
-  coupons: ['EASTER15OFF'],
-  shipping_method: 'Free Shipping - Free',
-  payment_method: 'Cash On Delivery',
-  billing_phone: '+47 888 999 000',
-  billing_country: 'US',
-  billing_region: 'Alaska',
-  billing_postcode: '12345',
-  billing_address: 'Sesam Street 1',
-  billing_company: 'Johny&Friends'
-}
-```
-
-You can build events JSON using the orders from above.
-
-```javascript
-var eventsJson = {
-  token: '<YOUR_PROJECT_TOKEN>',
-  // !!! Consider events is array. This way you can pass multiple orders when importing !!!
-  events: [
-    {
-       event_type: 'order',
-       // !!! Pass identify to know who is doing the order !!!
-       identity: {
-         email: 'johnybravo@gmail.com',
-         name: 'Johny Bravo',
-         first_name: 'Johny',
-         last_name: 'Bravo'
-       },
-       // !!! orderParams from the order strucure above !!!
-       params: orderParams,
-       time: 1463500152000 // !!! The order created timestamp (UNIX) multiplied by 1000 (to include milliseconds precision) !!!
-       uid: 'johnybravo@gmail.com' // !!! Again identification for user !!!
-       use_ip: '127.0.0.1' // Or the user ip address if you have it
-    }
-  ]
-}
-```
-**For order imports passing multiple events it is useful to pass chunks of orders rather than one by one. We recommend using 25 orders per chunk. Consider setting correct UNIX time for the call, because we can match order creation from there.**
-
-We are almost ready. Last step is securing the back-end calls a bit.
-
-For securing the back-end calls to Metrilo API there are some encryption stages when building the actual request.
-
-We will choose PHP for the examples bellow, but those are applicable for almost all popular languages.
-
-```php
-// eventJson is from the example above and is an named array with nested order arrays etc.
-$events = array(
-  'token' => '<YOUR_TOKEN_HERE>',
-  'events' => array(
-    // And events as arrays, as you can imagine :)
-  )
-);
-// Sort events by keys.
-ksort($events);
-// Encode the array
-$eventsJson = json_encode($events);
-// Encode using Base64
-$basedCall = base64_encode($eventsJson);
-// Finally build MD5 signature with the $basedCall concatenated with <YOUR_API_SECRET_HERE>
-$signature = md5($basedCall."<YOUR_API_SECRET_HERE>");
-// And with $signature and $basedCall build the final request
-$requestBody = array(
-  's' => $signature,
-  'hs' => $basedCall
-);
-```
-
-So the `$requestBody` is ready to be send as POST request body to Metrilo API.
-
-Our endpoint for back-end integration is `http://p.metrilo.com/bt`.
-
-You can choose suitable client for your environment to POST it (CURL, some rest client, etc.).
-
-**We suggest making those calls fire-and-forget so they don't block the normal back-end flows on error or timeout.**
-
-We have PHP implementation of a [lightweight async client](https://github.com/Metrilo/metrilo-magento1-integration/blob/staging/app/code/community/Metrilo/Analytics/Helper/Requestclient.php) we use in our Magento plugin based on libCurl.
-
-It is framework independent (instead of the `extend Mage_Core_Helper_Abstract` which can be removed without breaking the code).
-
----
-_For questions, ideas and critics you can open an issue here or write us to support@metrilo.com_
+# Metrilo custom integration tutorial
+
+**This guide is from developers for developers. If your are not a developer, please find one and come back later :)**
+
+:warning: **We strongly recommend doing this on Staging/Beta environment first to make sure the integration is smooth and nothing breaks down.**
+
+
+To do your custom integration with Metrilo and send data to our servers you have to use the **Metrilo API**. Its documentation is written according to the [OpenAPI Specification](https://swagger.io/docs/specification/about/). Please copy the content of this [file](metrilo_open_api_specification.yml) to the [swagger editor](https://editor.swagger.io/) for a better look. In the documentation you will find what endpoints the Metrilo API serves and what data they require.
+
+In general we can distinguish 3 types of endpoints according to their purpose. Also, this is what you have to do to complete your integration. These are endpoints for:
+* [Import of resources](#import-of-resources)
+* [Frontend events](#frontend-events)
+* [Backend events](#backend-events)
+
+<br/><br/>
+## Import of resources
+  Before doing any [Frontend](#frontend-events) and [Backend](#backend-events) events, you have to sync (import) your data with Metrilo. These are the **categories**, **products**, **customers** and **orders** you have in your database. Metrilo needs information about them, because these are the objects (resources) related to your customers actions.
+
+:warning: Keep in mind that:
+  * import of categories and products is **crucial** because the [Frontend events](#frontend-events) depends on it.
+  * import of customers is also **crucial** because new order events for old customers of yours depend on them([Backend events](#backend-events)).
+  * import of orders is necessary only if you want to sync any historical data with Metrilo.
+
+### Implementation
+:warning: There are a few **very important** rules you must follow when doing the import.
+* The order in which the import must be done is **categories -> products -> customers -> orders**. This is because the orders are dependent on the customers and the products, and the products are dependent on the categories.
+* Orders will not be imported if Metrilo has never seen the products.
+* Just keep the size of a single request **less than 5 MB**.
+
+### Import endpoints
+* /category/batch
+* /product/batch
+* /customer/batch
+* /order/batch
+
+All of the endpoints can import multiple records at once. More detailed information about what data they require you can find in the OpenAPI documentation mentioned above.
+
+### Examples of when to use these endpoints
+| Lets say you have                                          | you have to call ... with the required data about each resource |
+| :--------------------------------------------------------- | :-------------------------------------------------------------- |
+| categories shirts, jeans and hats                          | /category/batch                                                 |
+| products T-shirt, short sleeve shirt and Long sleeve shirt | /product/batch                                                  |
+| customers Marry, Molly and Jane                            | /customer/batch                                                 |
+| orders #100, #101 and #102                                 | /order/batch                                                    |
+
+<br/><br/>
+## Frontend events
+When a customer of yours do some actions on your website you have to tell Metrilo about it. Such actions could be view a page, add a product to the cart, view a product, make a search, etc. These are the actions that will be saved in the customer's current session and on the base of which Metrilo will do its magic.
+
+### Implementation
+To notify Metrilo about the customer actions you have to send the required data by using the [Frontend endpoints](#frontend-endpoints). Depending on the customer action there is a different endpoint you have to call. Fortunately and for your convenience we have made a **javascript library** that will simplify calling these endpoints. You could load it on your website and use the provided functions with it. [Here](frontend_integration_library.md) you could check how to load and use the library.
+
+:warning: Keep in mind that:
+* if you try to call any [Frontend endpoint](#frontend-endpoints) for not existing resource in Metrilo, your request won't be processed.
+* if you have any caching, make sure not to cache any customer-action-specific calls. Such calls are add to cart, remove from cart, identify and apply tags.
+
+### Frontend endpoints
+* /article/view
+* /category/view
+* /product/view
+* /cart/add
+* /cart/remove
+* /checkout
+* /custom
+* /page/land
+* /page/view
+* /search
+* /visitor/apply-tags
+* /visitor/identify
+
+Since you will most probably use the **javascript library** there is no need to call directly the endpoints.
+
+### Examples of when to use the javascript library
+| customers                            | you have to call ... with the required params |
+| :----------------------------------- | :-------------------------------------------- |
+| visit the Homepage                   | metrilo.viewPage                              |
+| visit an article page                | metrilo.viewArticle                           |
+| visit a category page                | metrilo.viewCategory                          |
+| visit a product page                 | metrilo.viewProduct                           |
+| visit another page (e.g. /thank-you) | metrilo.viewPage                              |
+| type something in the search bar     | metrilo.search                                |
+| add a product to their cart          | metrilo.addToCart                             |
+| remove a product from their cart     | metrilo.removeFromCart                        |
+| check the content of their cart      | metrilo.viewPage                              |
+| visit the checkout page              | metrilo.checkout                              |
+| enter their email in some html form  | metrilo.identify                              |
+
+
+<br/><br/>
+## Backend events
+When you create or update **categories**, **products**, **customers** or **orders** you have to notify Metrilo about it. These are the same objects (resources) you did import for, however here you can manage them one by one. To do this you can make a request to the relevant [Backend endpoint](#backend-endpoints) for the resource that was created/updated.
+
+### Implementation
+The Backend events has to be done from your backend. Therefore, we could not provide any pre-made library about it as the implementation is bound to your backend logic and programming language.
+However, a simple rule is any time you create or update a **category**, **product**, **customer** or **order**, call the relevant [Backend endpoint](#backend-endpoints) with the required data.
+
+:warning: Keep in mind that:
+* if you try to make any [Frontend event](#frontend-events) for not existing resource in Metrilo, your request won't be processed.
+* most of the times the data you send will override any existing data. For example, if you make a call about product *A* with categories *C1* and *C2* and then you make another call only with category *C3*, then the first two categories will be removed from the product. However, sometimes the data will be merged(e.g. product's options). If the data is merged, it will be explicitly mentioned in the OpenAPI documentation.
+
+### Backend endpoints
+
+* /category
+* /product
+* /customer
+* /order
+
+More detailed information about what data they require you can find in the OpenAPI documentation mentioned above.
+
+### Example of when to use these endpoints:
+| when                                                                                        | you have to call ... with the required data        |
+| :------------------------------------------------------------------------------------------ | :------------------------------------------------- |
+| a customer signs up for first time                                                          | /customer to create it                             |
+| a customer profile is updated                                                               | /customer to update it                             |
+| a new category is added to a product                                                        | /product to update its categories                  |
+| a new product is created                                                                    | /product to create it                              |
+| a new order is made                                                                         | /order to create it                                |
+| an order's status or details are changed                                                    | /order to update it                                |
+| a customer doesn't sign up, but makes an order just by filling in his email(guest customer) | /customer and then /order to create both resources |
+
+
+<br/><br/>
+## Responses from the endpoints
+The following responses are valid for all of the endpoints.
+
+| Code | Message |  
+| --- | --- |  
+| 204 | Success response. |  
+| 400 | Bad request from client. |  
+| 401 | Project token is invalid. |  
+| 402 | Project requires payment. |  
+| 403 | The IP that the request came from is ignored. |  
+| 500 | Error from server while processing request. |  
+| 502 | Error from server accepting request. |  
+ч
