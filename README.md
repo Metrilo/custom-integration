@@ -133,4 +133,3 @@ The following responses are valid for all of the endpoints.
 | 403 | The IP that the request came from is ignored. |  
 | 500 | Error from server while processing request. |  
 | 502 | Error from server accepting request. |  
-ч
