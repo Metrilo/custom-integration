@@ -733,6 +733,10 @@ components:
               type: string
               description: How the visitor will pay for the item(s), e.g. paypal, check, etc.
               example: PayPal
+        ipAddress:
+          type: string
+          description: The IP address of the customer when they placed the order.
+          example: '111.222.333.444'
     productObject:
       type: object
       required:
