@@ -701,14 +701,6 @@ components:
           type: object
           description: Order's billing information.
           properties:
-            firstName:
-              type: string
-              description: Customer's first name.
-              example: Johny
-            lastName:
-              type: string
-              description: Customer's last name.
-              example: Bravo
             address:
               type: string
               description: Full billing address.
