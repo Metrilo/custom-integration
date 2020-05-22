@@ -1,135 +1,221 @@
-
 # Metrilo custom integration tutorial
 
-**This guide is from developers for developers. If your are not a developer, please find one and come back later :)**
+**Note: This guide is intended to be used by developers. If you're not a developer - please find one and come back later :)**
 
-:warning: **We strongly recommend doing this on Staging/Beta environment first to make sure the integration is smooth and nothing breaks down.**
+Metrilo helps you track the events that the people visiting your shop do - such as viewing specific pages or products, adding products to the cart, making orders, etc. The provided data is transformed into different reports and analytics metrics you could benefit from.
 
+For more information about Metrilo and its features please visit [the official website](https://www.metrilo.com/).
 
-To do your custom integration with Metrilo and send data to our servers you have to use the **Metrilo API**. Its documentation is written according to the [OpenAPI Specification](https://swagger.io/docs/specification/about/). Please copy the content of this [file](metrilo_open_api_specification.yml) to the [swagger editor](https://editor.swagger.io/) for a better look. In the documentation you will find what endpoints the Metrilo API serves and what data they require.
+## Integration overview
 
-In general we can distinguish 3 types of endpoints according to their purpose. Also, this is what you have to do to complete your integration. These are endpoints for:
-* [Import of resources](#import-of-resources)
-* [Frontend events](#frontend-events)
-* [Backend events](#backend-events)
+:warning: **We strongly recommend doing this on a Staging/Beta environment first to make sure the integration is smooth and nothing breaks down.**
 
-<br/><br/>
-## Import of resources
-  Before doing any [Frontend](#frontend-events) and [Backend](#backend-events) events, you have to sync (import) your data with Metrilo. These are the **categories**, **products**, **customers** and **orders** you have in your database. Metrilo needs information about them, because these are the objects (resources) related to your customers actions.
+Here is what you need to do in order to integrate your data with Metrilo:
 
-:warning: Keep in mind that:
-  * import of categories and products is **crucial** because the [Frontend events](#frontend-events) depends on it.
-  * import of customers is also **crucial** because new order events for old customers of yours depend on them([Backend events](#backend-events)).
-  * import of orders is necessary only if you want to sync any historical data with Metrilo.
+1. Navigate to the `Settings -> Installation` page in your [Metrilo project](https://app.metrilo.com) (if you don't already have one, you can [create one here](https://app.metrilo.com/signup) and note your `API Token` - you'll need it for the next two steps
+2. [Import your resources](#importing-resources) to Metrilo
+3. [Install the tracking library](#tracking-library-installation) on each page of your website that you want to track
+4. Send [tracking events](#sending-tracking-events) to Metrilo for each user action on your website
 
-### Implementation
-:warning: There are a few **very important** rules you must follow when doing the import.
-* The order in which the import must be done is **categories -> products -> customers -> orders**. This is because the orders are dependent on the customers and the products, and the products are dependent on the categories.
-* Orders will not be imported if Metrilo has never seen the products.
-* Just keep the size of a single request **less than 5 MB**.
+That's it! Now user actions on your website will be recorded in your [Metrilo project](https://app.metrilo.com).
 
-### Import endpoints
-* /category/batch
-* /product/batch
-* /customer/batch
-* /order/batch
+## API
 
-All of the endpoints can import multiple records at once. More detailed information about what data they require you can find in the OpenAPI documentation mentioned above.
+Our API documentation is written according to the [OpenAPI Specification](https://swagger.io/docs/specification/about/). You can find all of the endpoints the Metrilo API serves and what parameters they require [here](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
 
-### Examples of when to use these endpoints
-| Lets say you have                                          | you have to call ... with the required data about each resource |
-| :--------------------------------------------------------- | :-------------------------------------------------------------- |
-| categories shirts, jeans and hats                          | /category/batch                                                 |
-| products T-shirt, short sleeve shirt and Long sleeve shirt | /product/batch                                                  |
-| customers Marry, Molly and Jane                            | /customer/batch                                                 |
-| orders #100, #101 and #102                                 | /order/batch                                                    |
+All calls to these endpoints have to be done from your backend - therefore, we don't provide any specific code examples as the implementation is bound to your backend logic and programming language.
 
-<br/><br/>
-## Frontend events
-When a customer of yours do some actions on your website you have to tell Metrilo about it. Such actions could be view a page, add a product to the cart, view a product, make a search, etc. These are the actions that will be saved in the customer's current session and on the base of which Metrilo will do its magic.
+:warning: Each Metrilo project has its own `API Token` and multiple stores cannot point to the same Metrilo project.
 
-### Implementation
-To notify Metrilo about the customer actions you have to send the required data by using the [Frontend endpoints](#frontend-endpoints). Depending on the customer action there is a different endpoint you have to call. Fortunately and for your convenience we have made a **javascript library** that will simplify calling these endpoints. You could load it on your website and use the provided functions with it. [Here](frontend_integration_library.md) you could check how to load and use the library.
+### Importing resources
 
-:warning: Keep in mind that:
-* if you try to call any [Frontend endpoint](#frontend-endpoints) for not existing resource in Metrilo, your request won't be processed.
-* if you have any caching, make sure not to cache any customer-action-specific calls. Such calls are add to cart, remove from cart, identify and apply tags.
+A _resource_ is a **category**, **product**, **customer** or **order**. Any time one of these changes on your backend, you should call the respective endpoint to create or update the resource in Metrilo.
 
-### Frontend endpoints
-* /article/view
-* /category/view
-* /product/view
-* /cart/add
-* /cart/remove
-* /checkout
-* /custom
-* /page/land
-* /page/view
-* /search
-* /visitor/apply-tags
-* /visitor/identify
+Before sending any [tracking events](#sending-tracking-events) to Metrilo, you need to import your data using the endpoints provided for each resource. All of the endpoints have a singular and a batch version - we recommend using the latter to import your resources. You can find more detailed information about what data they require in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
 
-Since you will most probably use the **javascript library** there is no need to call directly the endpoints.
+Importing **must** be done in the following order:
+1. Categories - `/category/batch` _(required)_
+2. Products `/product/batch` _(required)_
+3. Customers `/customer/batch` _(required)_
+4. Orders - `/order/batch` (required _only if you want to sync any historical data with Metrilo_)
 
-### Examples of when to use the javascript library
-| customers                            | you have to call ... with the required params |
-| :----------------------------------- | :-------------------------------------------- |
-| visit the Homepage                   | metrilo.viewPage                              |
-| visit an article page                | metrilo.viewArticle                           |
-| visit a category page                | metrilo.viewCategory                          |
-| visit a product page                 | metrilo.viewProduct                           |
-| visit another page (e.g. /thank-you) | metrilo.viewPage                              |
-| type something in the search bar     | metrilo.search                                |
-| add a product to their cart          | metrilo.addToCart                             |
-| remove a product from their cart     | metrilo.removeFromCart                        |
-| check the content of their cart      | metrilo.viewPage                              |
-| visit the checkout page              | metrilo.checkout                              |
-| enter their email in some html form  | metrilo.identify                              |
+:warning: The order stated above is important, because orders are dependent on customers and products (which are in turn dependent on categories). An order won't be imported if Metrilo doesn't know about the customer or the product.
 
+:warning: Note that each request you send to Metrilo is limited to **5MB** in size.
 
-<br/><br/>
-## Backend events
-When you create or update **categories**, **products**, **customers** or **orders** you have to notify Metrilo about it. These are the same objects (resources) you did import for, however here you can manage them one by one. To do this you can make a request to the relevant [Backend endpoint](#backend-endpoints) for the resource that was created/updated.
+:warning: Most of the time the data you send will override any existing data. For example, if you make a call about product *A* with categories *C1* and *C2* and then you make another call only with category *C3*, then the first two categories will be removed from the product. However, sometimes the data will be merged (e.g. adding a product's options). If the data is merged, it will be explicitly mentioned in the documentation.
 
-### Implementation
-The Backend events has to be done from your backend. Therefore, we could not provide any pre-made library about it as the implementation is bound to your backend logic and programming language.
-However, a simple rule is any time you create or update a **category**, **product**, **customer** or **order**, call the relevant [Backend endpoint](#backend-endpoints) with the required data.
+### Tracking library installation
 
-:warning: Keep in mind that:
-* if you try to make any [Frontend event](#frontend-events) for not existing resource in Metrilo, your request won't be processed.
-* most of the times the data you send will override any existing data. For example, if you make a call about product *A* with categories *C1* and *C2* and then you make another call only with category *C3*, then the first two categories will be removed from the product. However, sometimes the data will be merged(e.g. product's options). If the data is merged, it will be explicitly mentioned in the OpenAPI documentation.
+Insert the following script tag in the page you want to track (we recommend inserting it in the `<head>` tag):
+```
+<script type="text/javascript" src="https://trk.mtrl.me/tracking.js?token=<YOUR_PROJECT_TOKEN>"></script>
+```
 
-### Backend endpoints
+Replace `<YOUR_PROJECT_TOKEN>` with the API token from within the `Settings -> Installation` page in your Metrilo project.
 
-* /category
-* /product
-* /customer
-* /order
+:warning: Make sure to remove the `<` and `>` symbols. So, for instance, if your token was `1234asdf`, you would need to put in this snippet:
+```
+<script type="text/javascript" src="https://trk.mtrl.me/tracking.js?token=1234asdf"></script>
+```
 
-More detailed information about what data they require you can find in the OpenAPI documentation mentioned above.
+When you have successfully loaded the tracking library, you will have access to a `window.metrilo` object on your page.
 
-### Example of when to use these endpoints:
-| when                                                                                        | you have to call ... with the required data        |
-| :------------------------------------------------------------------------------------------ | :------------------------------------------------- |
-| a customer signs up for first time                                                          | /customer to create it                             |
-| a customer profile is updated                                                               | /customer to update it                             |
-| a new category is added to a product                                                        | /product to update its categories                  |
-| a new product is created                                                                    | /product to create it                              |
-| a new order is made                                                                         | /order to create it                                |
-| an order's status or details are changed                                                    | /order to update it                                |
-| a customer doesn't sign up, but makes an order just by filling in his email(guest customer) | /customer and then /order to create both resources |
+:warning: **You should add the script tag on every page that you want to track!**
 
+### Sending tracking events
 
-<br/><br/>
-## Responses from the endpoints
-The following responses are valid for all of the endpoints.
+A tracking event is an action that a customer of yours does on your website - such as viewing a page, adding an item to their cart, ordering a product, etc. These actions are saved in the customer's current session and are the base of which Metrilo does its magic.
 
-| Code | Message |  
-| --- | --- |  
-| 204 | Success response. |  
-| 400 | Bad request from client. |  
-| 401 | Project token is invalid. |  
-| 402 | Project requires payment. |  
-| 403 | The IP that the request came from is ignored. |  
-| 500 | Error from server while processing request. |  
-| 502 | Error from server accepting request. |  
+These are the functions you need to call on the `window.metrilo` object based on what a customer does on your website.
+
+| Whenever a customer                 | you need to call                  |
+| :---------------------------------- | :-------------------------------- |
+| enters their email on your website  | [identify](#identify)             |
+| visits a page                       | [viewPage](#viewPage)             |
+| visits an article page              | [viewArticle](#viewArticle)       |
+| visits a category page              | [viewCategory](#viewCategory)     |
+| visits a product page               | [viewProduct](#viewProduct)       |
+| types something in the search bar   | [search](#search)                 |
+| adds a product to their cart        | [addToCart](#addToCart)           |
+| removes a product from their cart   | [removeFromCart](#removeFromCart) |
+| visits the checkout page            | [checkout](#checkout)             |
+
+We also provide two more functions that you can use at any point you like - [applyTags](#apply-tags) and [customEvent](#custom-event).
+
+:warning: It is extremely important _not_ to cache any customer-action-specific calls. This will result in events being attributed to the wrong customer, which cannot be undone. If you are using full page caching, consider adding some sort of hole-punching mechanism.
+
+:warning: Processing the calls to our API does not happen instantly - please allow for about a minute for them to be processed.
+
+:warning: Keep in mind that if you try to send any tracking event for a resource that doesn't exist in Metrilo, your request won't be processed.
+
+#### Identify
+
+When a customer comes to the store and they are not logged in, Metrilo treats them as an anonymous customer by adding a unique identifier to their session (a cookie named **cbuid**), so that it could attribute their actions to this identifier. Once they provide an email (by logging in, signing up, filling in a subscription form, making an order, etc.) you need to call the identify function. This will associate the unique identifier with the email and all events that the customer had while being anonymous will be merged with the events they have as identified (if any).
+
+It is enough to call `identify` only once - the first time the customer enters their email. If you are unsure whether you have already called it - just check the value of the **cbuid** cookie. If there is an email - no need to call it. Otherwise it will contain the unique identifier mentioned above.
+
+:warning: Sometimes customers will log out, use different devices, browsers or delete their cookies. Every time that happens Metrilo will create a new anonymous customer with a new unique identifier. However, once the customer identifies themselves (enters their email and you call metrilo.identify) Metrilo will check for the existence of a customer with the entered email and if there is one, it will merge them with the anonymous customer.
+
+```javascript
+  const email = 'johnnybravo@gmail.com' // Customer's email address
+
+  window.metrilo.identify(email)
+```
+
+#### viewPage
+
+Customer has visited a page on your website. It can be the homepage, or any other page.
+
+```javascript
+  const url = 'http://myshop.com/amazing-page' // Absolute URL to the visited page
+  const params = {
+    name: 'My Amazing page' // The name of the page in the shop
+  }
+
+  window.metrilo.viewPage(url, params)
+```
+
+#### viewArticle
+
+Customer has visited an article page.
+
+```javascript
+  const articleId = '42' // Unique ID of article resource in the shop's database
+  const params = {
+    name: 'How to increase sales' // Article display name in the shop
+    url: 'http://myshop.com/how-to-increase-sales' // Landing page for the article resource
+  }
+
+  window.metrilo.viewArticle(articleId, params)
+```
+
+#### viewCategory
+Customer has visited a category page.
+
+```javascript
+  const categoryId = '9912' // Unique ID of category resource in the shop's database
+
+  window.metrilo.viewCategory(categoryId)
+```
+
+#### viewProduct
+Customer has visited a product page.
+
+```javascript
+  const productId = '312' // The ID of the product in the shop's database
+
+  window.metrilo.viewProduct(productId)
+```
+
+#### search
+
+Customer has searched in the shop (this supports only a plain query string without further filtering).
+
+```javascript
+  const query = 'a plant' // Search query string that the visitor entered in the search form
+  const url = 'http://myshop.com/search/?s=a+plant' // The URL that the visitor landed on when submitting the search form
+
+  window.metrilo.search(query, url)
+```
+
+#### addToCart
+Customer has added a product to the cart.
+
+```javascript
+  const productId = '312' // The ID of the added product
+  const quantity = 2 // The quantity of added items
+
+  window.metrilo.addToCart(productId, quantity)
+```
+
+#### removeFromCart
+Customer has removed a product from the cart.
+
+```javascript
+  const productId = '312' // The ID of the removed product
+  const quantity = 1 // The quantity of removed items
+
+  window.metrilo.removeFromCart(productId, quantity)
+```
+
+#### checkout
+Customer has started the checkout process.
+
+```javascript
+  window.metrilo.checkout()
+```
+
+#### applyTags
+Adds tags to a customer.
+
+```javascript
+  const tags = ['regular', 'big_spender'] // Tag labels that are assigned to the customer in the Metrilo application
+
+  window.metrilo.applyTags(tags)
+```
+
+#### customEvent
+Sends a custom event (anything you want to track).
+
+```javascript
+  const customEventName = 'paypal_payment' // The name of the custom event
+
+  window.metrilo.customEvent(customEventName)
+```
+
+## Troubleshooting
+
+### Error codes
+
+The following error codes are valid for all endpoints:
+
+| Code | Message                                       |
+| :--- | :-------------------------------------------- |
+| 204  | Success response.                             |
+| 400  | Bad request from client.                      |
+| 401  | Project token is invalid.                     |
+| 402  | Project requires payment.                     |
+| 403  | The IP that the request came from is ignored. |
+| 500  | Error from server while processing request.   |
+| 502  | Error from server accepting request.          |
