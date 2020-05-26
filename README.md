@@ -1,8 +1,8 @@
 # Metrilo custom integration tutorial
 
-**Note: This guide is intended to be used by developers. If you're not a developer - please find one and come back later :)**
+:warning: **This guide is intended to be used by developers. If you're not a developer - please find one and come back later :)**
 
-Metrilo helps you track the events that the people visiting your shop do - such as viewing specific pages or products, adding products to the cart, making orders, etc. The provided data is transformed into different reports and analytics metrics you could benefit from.
+Metrilo helps you track the events that the people visiting your shop do - viewing specific pages or products, adding products to the cart, making orders, etc. The provided data is transformed into different reports and analytics metrics you could benefit from.
 
 For more information about Metrilo and its features please visit [the official website](https://www.metrilo.com/).
 
@@ -12,7 +12,7 @@ For more information about Metrilo and its features please visit [the official w
 
 Here is what you need to do in order to integrate your data with Metrilo:
 
-1. Navigate to the `Settings -> Installation` page in your [Metrilo project](https://app.metrilo.com) (if you don't already have one, you can [create one here](https://app.metrilo.com/signup) and note your `API Token` - you'll need it for the next two steps
+1. Navigate to the `Settings -> Installation` page in your [Metrilo project](https://app.metrilo.com) (if you don't have one yet - you can [create one here](https://app.metrilo.com/signup)) and note your `API Token` - you'll need it for the next two steps
 2. [Import your resources](#importing-resources) to Metrilo
 3. [Install the tracking library](#tracking-library-installation) on each page of your website that you want to track
 4. Send [tracking events](#sending-tracking-events) to Metrilo for each user action on your website
@@ -35,8 +35,8 @@ Before sending any [tracking events](#sending-tracking-events) to Metrilo, you n
 
 Importing **must** be done in the following order:
 1. Categories - `/category/batch` _(required)_
-2. Products `/product/batch` _(required)_
-3. Customers `/customer/batch` _(required)_
+2. Products - `/product/batch` _(required)_
+3. Customers - `/customer/batch` _(required)_
 4. Orders - `/order/batch` (required _only if you want to sync any historical data with Metrilo_)
 
 :warning: The order stated above is important, because orders are dependent on customers and products (which are in turn dependent on categories). An order won't be imported if Metrilo doesn't know about the customer or the product.
