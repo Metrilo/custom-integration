@@ -24,20 +24,18 @@ That's it! Now user actions on your website will be recorded in your [Metrilo pr
 
 Our API documentation is written according to the [OpenAPI Specification](https://swagger.io/docs/specification/about/). You can find all of the endpoints the Metrilo API serves and what parameters they require [here](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
 
+:warning: The base url for each request is `https://trk.mtrl.me`. **Don't forget that you need to add your `API_TOKEN` as a `token` parameter in the request body.**
+
 ### Creating and updating resources
 
-A _resource_ is a **category**, **product**, **customer** or **order**. Any time one of these changes on your backend, you should call the respective endpoint to create or update the resource in Metrilo. The base url you should use for these is `https://trk.mtrl.me`. **Don't forget that you need to add your `API_TOKEN` as a `token` parameter in the request body.**
+A _resource_ is a **category**, **product**, **customer** or **order**. Any time one of these changes on your backend, you should call the respective endpoint to create or update the resource in Metrilo. You can find more details for each endpoint in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
 
-| Endpoint           | Type     | Usage                                         |
-| :----------------- | :------- | :-------------------------------------------- |
-| /customer          | Singular | Create or update a single customer            |
-| /customer/batch    | Batch    | Create (import) or update multiple customers  |
-| /category          | Singular | Create or update a single category            |
-| /category/batch    | Batch    | Create (import) or update multiple categories |
-| /product           | Singular | Create or update a single product             |
-| /product/batch     | Batch    | Create (import) or update multiple products   |
-| /order             | Singular | Create or update a single order               |
-| /order/batch       | Batch    | Create (import) or update multiple orders     |
+| Endpoint           | Usage                               |
+| :----------------- | :---------------------------------- |
+| /customer          | Create or update a single customer  |
+| /category          | Create or update a single category  |
+| /product           | Create or update a single product   |
+| /order             | Create or update a single order     |
 
 All calls to these endpoints have to be done from your backend - therefore, we don't provide any specific code examples as the implementation is bound to your backend logic and programming language.
 
@@ -47,18 +45,17 @@ All calls to these endpoints have to be done from your backend - therefore, we d
 
 :warning: Note that each request you send to Metrilo is limited to **5MB** in size.
 
-:warning: We recommend using the **batch** endpoints to import resources, and the **singular** endpoints to create or update a single resource
-
 ### Importing resources
 
-Before sending any [tracking events](#sending-tracking-events) to Metrilo, you need to import your data using the endpoints provided for each resource. You can find more detailed information about what data they require in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
+Before sending any [tracking events](#sending-tracking-events) to Metrilo, you need to import your data using the endpoints provided for each resource. **Note that importing must be done in the order provided.** You can find more details for each endpoint in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
 
-Importing **must** be done in the following order:
-1. Customers - `/customer/batch` _(required)_
-2. Categories - `/category/batch` _(required)_
-3. Deleted products - `/product/batch` (required _only if you want to import orders for products that no longer exist in your database_)
-4. Products - `/product/batch` _(required)_
-5. Orders - `/order/batch` (required _only if you want to sync any historical data with Metrilo_)
+| #  | Resource         | Endpoint          | Required |
+| :- | :--------------- | :---------------- | :------- |
+| 1. | Customers        | `/customer/batch` | Yes      |
+| 2. | Categories       | `/category/batch` | Yes      |
+| 3. | Deleted products | `/product/batch`  | Only if you want to import orders for products that no longer exist in your database   |
+| 4. | Products         | `/product/batch`  | Yes      |
+| 5. | Orders           | `/order/batch`    | Only if you want to sync any historical data with Metrilo     |
 
 :warning: The order stated above is important, because orders are dependent on customers and products (which are in turn dependent on categories). An order won't be imported if Metrilo doesn't know about the customer or the product.
 
