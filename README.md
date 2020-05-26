@@ -97,8 +97,8 @@ These are the functions you need to call on the `window.metrilo` object based on
 | adds a product to their cart        | [addToCart](#addToCart)           |
 | removes a product from their cart   | [removeFromCart](#removeFromCart) |
 | visits the checkout page            | [checkout](#checkout)             |
-| does anything you'd like to tag     | [applyTags](#apply-tags)          |
-| does anything                       | [customEvent](#custom-event)      |
+| does anything you'd like to tag     | [applyTags](#applyTags)           |
+| does anything                       | [customEvent](#customEvent)       |
 
 :warning: It is extremely important _not_ to cache any customer-action-specific calls. This will result in events being attributed to the wrong customer, which cannot be undone. If you are using full page caching, consider adding some sort of hole-punching mechanism.
 
