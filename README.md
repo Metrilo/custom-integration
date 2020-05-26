@@ -26,7 +26,7 @@ Our API documentation is written according to the [OpenAPI Specification](https:
 
 ### Creating and updating resources
 
-A _resource_ is a **category**, **product**, **customer** or **order**. Any time one of these changes on your backend, you should call the respective endpoint to create or update the resource in Metrilo. The base url you should use for these is `https://trk.mtrl.me`. **Note that you need to add your `API_TOKEN` as a `token` parameter in the request body.**
+A _resource_ is a **category**, **product**, **customer** or **order**. Any time one of these changes on your backend, you should call the respective endpoint to create or update the resource in Metrilo. The base url you should use for these is `https://trk.mtrl.me`. **Don't forget that you need to add your `API_TOKEN` as a `token` parameter in the request body.**
 
 | Endpoint           | Type     | Usage                                         |
 | :----------------- | :------- | :-------------------------------------------- |
@@ -97,8 +97,8 @@ These are the functions you need to call on the `window.metrilo` object based on
 | adds a product to their cart        | [addToCart](#addToCart)           |
 | removes a product from their cart   | [removeFromCart](#removeFromCart) |
 | visits the checkout page            | [checkout](#checkout)             |
-
-We also provide two more functions that you can use at any point you like - [applyTags](#apply-tags) and [customEvent](#custom-event).
+| does anything you'd like to tag     | [applyTags](#apply-tags)          |
+| does anything                       | [customEvent](#custom-event)      |
 
 :warning: It is extremely important _not_ to cache any customer-action-specific calls. This will result in events being attributed to the wrong customer, which cannot be undone. If you are using full page caching, consider adding some sort of hole-punching mechanism.
 
