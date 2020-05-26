@@ -14,8 +14,9 @@ Here is what you need to do in order to integrate your data with Metrilo:
 
 1. Navigate to the `Settings -> Installation` page in your [Metrilo project](https://app.metrilo.com) (if you don't have one yet - you can [create one here](https://app.metrilo.com/signup)) and note your `API Token` - you'll need it for the next two steps
 2. [Import your resources](#importing-resources) to Metrilo
-3. [Install the tracking library](#tracking-library-installation) on each page of your website that you want to track
-4. Send [tracking events](#sending-tracking-events) to Metrilo for each user action on your website
+3. Send [resource updates](#creating-and-updating-resources) whenever your resources change
+4. [Install the tracking library](#tracking-library-installation) on each page of your website that you want to track
+5. Send [tracking events](#sending-tracking-events) to Metrilo for each user action on your website
 
 That's it! Now user actions on your website will be recorded in your [Metrilo project](https://app.metrilo.com).
 
@@ -23,15 +24,34 @@ That's it! Now user actions on your website will be recorded in your [Metrilo pr
 
 Our API documentation is written according to the [OpenAPI Specification](https://swagger.io/docs/specification/about/). You can find all of the endpoints the Metrilo API serves and what parameters they require [here](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
 
+### Creating and updating resources
+
+A _resource_ is a **category**, **product**, **customer** or **order**. Any time one of these changes on your backend, you should call the respective endpoint to create or update the resource in Metrilo. The base url you should use for these is `https://trk.mtrl.me`. **Note that you need to add your `API_TOKEN` as a `token` parameter in the request body.**
+
+| Endpoint           | Type     | Usage                                         |
+| :----------------- | :------- | :-------------------------------------------- |
+| /customer          | Singular | Create or update a single customer            |
+| /customer/batch    | Batch    | Create (import) or update multiple customers  |
+| /category          | Singular | Create or update a single category            |
+| /category/batch    | Batch    | Create (import) or update multiple categories |
+| /product           | Singular | Create or update a single product             |
+| /product/batch     | Batch    | Create (import) or update multiple products   |
+| /order             | Singular | Create or update a single order               |
+| /order/batch       | Batch    | Create (import) or update multiple orders     |
+
 All calls to these endpoints have to be done from your backend - therefore, we don't provide any specific code examples as the implementation is bound to your backend logic and programming language.
 
 :warning: Each Metrilo project has its own `API Token` and multiple stores cannot point to the same Metrilo project.
 
+:warning: Most of the time the data you send will override any existing data. For example, if you make a call about product *A* with categories *C1* and *C2* and then you make another call only with category *C3*, then the first two categories will be removed from the product. However, sometimes the data will be merged (e.g. adding a product's options). If the data is merged, it will be explicitly mentioned in the documentation.
+
+:warning: Note that each request you send to Metrilo is limited to **5MB** in size.
+
+:warning: We recommend using the **batch** endpoints to import resources, and the **singular** endpoints to create or update a single resource
+
 ### Importing resources
 
-A _resource_ is a **category**, **product**, **customer** or **order**. Any time one of these changes on your backend, you should call the respective endpoint to create or update the resource in Metrilo.
-
-Before sending any [tracking events](#sending-tracking-events) to Metrilo, you need to import your data using the endpoints provided for each resource. All of the endpoints have a singular and a batch version - we recommend using the latter to import your resources. You can find more detailed information about what data they require in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
+Before sending any [tracking events](#sending-tracking-events) to Metrilo, you need to import your data using the endpoints provided for each resource. You can find more detailed information about what data they require in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
 
 Importing **must** be done in the following order:
 1. Customers - `/customer/batch` _(required)_
@@ -41,10 +61,6 @@ Importing **must** be done in the following order:
 5. Orders - `/order/batch` (required _only if you want to sync any historical data with Metrilo_)
 
 :warning: The order stated above is important, because orders are dependent on customers and products (which are in turn dependent on categories). An order won't be imported if Metrilo doesn't know about the customer or the product.
-
-:warning: Note that each request you send to Metrilo is limited to **5MB** in size.
-
-:warning: Most of the time the data you send will override any existing data. For example, if you make a call about product *A* with categories *C1* and *C2* and then you make another call only with category *C3*, then the first two categories will be removed from the product. However, sometimes the data will be merged (e.g. adding a product's options). If the data is merged, it will be explicitly mentioned in the documentation.
 
 ### Tracking library installation
 
