@@ -34,10 +34,11 @@ A _resource_ is a **category**, **product**, **customer** or **order**. Any time
 Before sending any [tracking events](#sending-tracking-events) to Metrilo, you need to import your data using the endpoints provided for each resource. All of the endpoints have a singular and a batch version - we recommend using the latter to import your resources. You can find more detailed information about what data they require in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
 
 Importing **must** be done in the following order:
-1. Categories - `/category/batch` _(required)_
-2. Products - `/product/batch` _(required)_
-3. Customers - `/customer/batch` _(required)_
-4. Orders - `/order/batch` (required _only if you want to sync any historical data with Metrilo_)
+1. Customers - `/customer/batch` _(required)_
+2. Categories - `/category/batch` _(required)_
+3. Deleted products - `/product/batch` (required _only if you want to import orders for products that no longer exist in your database_)
+4. Products - `/product/batch` _(required)_
+5. Orders - `/order/batch` (required _only if you want to sync any historical data with Metrilo_)
 
 :warning: The order stated above is important, because orders are dependent on customers and products (which are in turn dependent on categories). An order won't be imported if Metrilo doesn't know about the customer or the product.
 
