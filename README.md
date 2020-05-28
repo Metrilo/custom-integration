@@ -6,25 +6,118 @@ Metrilo helps you track the events that the people visiting your shop do - viewi
 
 For more information about Metrilo and its features please visit [the official website](https://www.metrilo.com/).
 
-## Integration overview
+## Overview
 
 :warning: **We strongly recommend doing this on a Staging/Beta environment first to make sure the integration is smooth and nothing breaks down.**
 
-Here is what you need to do in order to integrate your data with Metrilo:
+[Quickstart guide](#quickstart-guide)
+[API reference](#api-reference)
+[Importing resources](#importing-resources)
+[Managing resources](#creating-and-updating-resources)
+[Tracking library installation](#tracking-library-installation)
+[Tracking events](#tracking-events)
 
-1. Navigate to the `Settings -> Installation` page in your [Metrilo project](https://app.metrilo.com) (if you don't have one yet - you can [create one here](https://app.metrilo.com/signup)) and note your `API Token` - you'll need it for the next two steps
-2. [Import your resources](#importing-resources) to Metrilo
-3. Send [resource updates](#creating-and-updating-resources) whenever your resources change
-4. [Install the tracking library](#tracking-library-installation) on each page of your website that you want to track
-5. Send [tracking events](#sending-tracking-events) to Metrilo for each user action on your website
+### Quickstart guide
 
-That's it! Now user actions on your website will be recorded in your [Metrilo project](https://app.metrilo.com).
+:warning: If you decide to follow along, you'll end up with some resources that you (most probably) won't use in the future. However, that's perfectly fine - after you're done testing, you can just ping us and we'll reset your project to a pristine state.
 
-## API
+Once you've [signed up for a Metrilo account](https://app.metrilo.com/signup), navigate to the `Settings -> Installation` page in your [Metrilo project](https://app.metrilo.com) and keep your `API Token` handy - you'll need it for the rest of this tutorial:
+
+![](images/api-token.png)
+
+First, we need to create some resources. Let's create a category, a product and a customer. We'll assume your API token is `sh0p-t0k3n` and the current time (in milliseconds since 1970) is `1518004715732`:
+
+```
+curl -X POST https://trk.mtrl.me/category" -H "Content-Type: text/plain" -d \
+'{
+  "time": 1518004715732,
+  "token": "sh0p-t0k3n",
+  "params": {
+    "id": "1",
+    "name": "Awesome clothing",
+    "url": "https://my-awesome-shop.com/awesome-clothing"
+  }
+}'
+```
+
+```
+curl -X POST https://trk.mtrl.me/product" -H "Content-Type: text/plain" -d \
+'{
+  "time": 1518004715732,
+  "token": "sh0p-t0k3n",
+  "params": {
+    "id": "2",
+    "categories": ["1"],
+    "name": "Awesome T-Shirt",
+    "url": "https://my-awesome-shop.com/awesome-clothing/awesome-t-shirt"
+  }
+}'
+```
+
+```
+curl -X POST https://trk.mtrl.me/customer" -H "Content-Type: text/plain" -d \
+'{
+  "time": 1518004715732,
+  "token": "sh0p-t0k3n",
+  "params": {
+    "email": "johnybravo@gmail.com",
+    "createdAt": 1518004715732
+  }
+}'
+```
+
+The next step is to install the frontend library. Add the following snippet to your website (preferably the `<head>` tag):
+
+```
+<script type="text/javascript" src="https://trk.mtrl.me/tracking.js?token=sh0p-t0k3n"></script>
+```
+
+When you load that script, you should have access to a `window.metrilo` object. That's what you're going to use to create tracking events on behalf of your customers.
+
+Now let's create the following user journey - the user opened your homepage, navigated to the category page, then the product, then added it to the cart and finally placed an order. Here is what you would do on the frontend:
+
+```javascript
+window.metrilo.viewPage('http://my-awesome-shop.com/', { name: 'Awesome homepage' }) // This would be called on your homepage
+window.metrilo.viewCategory('1') // This would be called on the 'Awesome clothing' category page
+window.metrilo.viewProduct('2') // This would be called on the 'Awesome T-Shirt' product page
+window.metrilo.addToCart('2') // This would be called when a user clicks an add to cart button
+window.metrilo.checkout() // This would be called whenever the customer starts the checkout process
+```
+
+At that point, all of the actions are done by an anonymous user (you can check that in the Metrilo app) - you can either ask them to login now and use the email they provided:
+
+```javascript
+window.metrilo.identify('johnybravo@gmail.com')
+```
+
+...or wait until they fill their email inside your order details form. In any case, when they finish the order, you'll need to send the order event from your backend:
+
+```
+curl -X POST https://trk.mtrl.me/order" -H "Content-Type: text/plain" -d \
+'{
+  "time": 1518004715732,
+  "token": "sh0p-t0k3n",
+  "params": {
+    "id": "314",
+    "createdAt": "1518004715732",
+    "email": "johnybravo@gmail.com",
+    "amount": "10.42",
+    "status": "completed",
+    "products": [
+      "productId": "2",
+      "quantity": 1
+    ]
+  }
+}'
+```
+
+That's it! Now when all events are processed by Metrilo, they will be attributed to the `johnybravo@gmail.com` user.
+
+## API reference
 
 Our API documentation is written according to the [OpenAPI Specification](https://swagger.io/docs/specification/about/). You can find all of the endpoints the Metrilo API serves and what parameters they require [here](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
 
-:warning: The base url for each request is `https://trk.mtrl.me`. **Don't forget that you need to add your `API_TOKEN` as a `token` parameter in the request body.**
+:warning: The base url for each request is `https://trk.mtrl.me`. Don't forget that you need to add your Metrilo `API token` as a `token` parameter in the request body.
 
 ### Creating and updating resources
 
@@ -47,7 +140,7 @@ All calls to these endpoints have to be done from your backend - therefore, we d
 
 ### Importing resources
 
-Before sending any [tracking events](#sending-tracking-events) to Metrilo, you need to import your data using the endpoints provided for each resource. **Note that importing must be done in the order provided.** You can find more details for each endpoint in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
+Before sending any [tracking events](#tracking-events) to Metrilo, you need to import your data using the endpoints provided for each resource. **Note that importing must be done in the order provided.** You can find more details for each endpoint in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
 
 | #  | Resource         | Endpoint          | Required |
 | :- | :--------------- | :---------------- | :------- |
@@ -77,7 +170,7 @@ When you have successfully loaded the tracking library, you will have access to 
 
 :warning: **You should add the script tag on every page that you want to track!**
 
-### Sending tracking events
+### Tracking events
 
 A tracking event is an action that a customer of yours does on your website - such as viewing a page, adding an item to their cart, ordering a product, etc. These actions are saved in the customer's current session and are the base of which Metrilo does its magic.
 
