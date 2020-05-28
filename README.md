@@ -11,10 +11,15 @@ For more information about Metrilo and its features please visit [the official w
 :warning: **We strongly recommend doing this on a Staging/Beta environment first to make sure the integration is smooth and nothing breaks down.**
 
 [Quickstart guide](#quickstart-guide)
+
 [API reference](#api-reference)
+
 [Importing resources](#importing-resources)
+
 [Managing resources](#creating-and-updating-resources)
+
 [Tracking library installation](#tracking-library-installation)
+
 [Tracking events](#tracking-events)
 
 ### Quickstart guide
