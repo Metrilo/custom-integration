@@ -1,6 +1,6 @@
 # Metrilo custom integration tutorial
 
-:warning: **This guide is intended to be used by developers. If you're not a developer - please find one and come back later :)**
+:information_source: **This guide is intended to be used by developers. If you're not a developer - please find one and come back later :)**
 
 Metrilo helps you track the events that the people visiting your shop do - viewing specific pages or products, adding products to the cart, making orders, etc. The provided data is transformed into different reports and analytics metrics you could benefit from.
 
@@ -19,16 +19,17 @@ For more information about Metrilo and its features please visit [the official w
 
 ### Quickstart guide
 
-:warning: If you decide to follow along, you'll end up with some resources that you (most probably) won't use in the future. However, that's perfectly fine - after you're done testing, you can just ping us and we'll reset your project to a pristine state.
+:information_source: If you decide to follow along, you'll end up with some resources that you (most probably) won't use in the future. However, that's perfectly fine - after you're done testing, you can just ping us and we'll reset your project to a pristine state.
 
 Once you've [signed up for a Metrilo account](https://app.metrilo.com/signup), navigate to the `Settings -> Installation` page in your [Metrilo project](https://app.metrilo.com) and keep your `API Token` handy - you'll need it for the rest of this tutorial:
 
 ![](images/api-token.png)
 
-First, we need to create some resources. Let's create a category, a product and a customer. We'll assume your API token is `sh0p-t0k3n` and the current time (in milliseconds since 1970) is `1518004715732`:
+First, we need to create some resources. Let's create a category, a product and a customer. We'll assume
+the current time (in milliseconds since 1970) is `1518004715732`:
 
 ```
-curl -X POST https://trk.mtrl.me/category" -H "Content-Type: text/plain" -d \
+curl -X POST "https://trk.mtrl.me/category" -i -H "Content-Type: text/plain" -d \
 '{
   "time": 1518004715732,
   "token": "sh0p-t0k3n",
@@ -41,13 +42,14 @@ curl -X POST https://trk.mtrl.me/category" -H "Content-Type: text/plain" -d \
 ```
 
 ```
-curl -X POST https://trk.mtrl.me/product" -H "Content-Type: text/plain" -d \
+curl -X POST "https://trk.mtrl.me/product" -i -H "Content-Type: text/plain" -d \
 '{
   "time": 1518004715732,
   "token": "sh0p-t0k3n",
   "params": {
     "id": "2",
     "categories": ["1"],
+    "price": 10.42,
     "name": "Awesome T-Shirt",
     "url": "https://my-awesome-shop.com/awesome-clothing/awesome-t-shirt"
   }
@@ -55,7 +57,7 @@ curl -X POST https://trk.mtrl.me/product" -H "Content-Type: text/plain" -d \
 ```
 
 ```
-curl -X POST https://trk.mtrl.me/customer" -H "Content-Type: text/plain" -d \
+curl -X POST "https://trk.mtrl.me/customer" -i -H "Content-Type: text/plain" -d \
 '{
   "time": 1518004715732,
   "token": "sh0p-t0k3n",
@@ -66,6 +68,8 @@ curl -X POST https://trk.mtrl.me/customer" -H "Content-Type: text/plain" -d \
 }'
 ```
 
+(We include the `-i` param so that you can verify a 204 status code for all these requests)
+
 The next step is to install the frontend library. Add the following snippet to your website (preferably the `<head>` tag):
 
 ```
@@ -74,26 +78,44 @@ The next step is to install the frontend library. Add the following snippet to y
 
 When you load that script, you should have access to a `window.metrilo` object. That's what you're going to use to create tracking events on behalf of your customers.
 
-Now let's create the following user journey - the user opened your homepage, navigated to the category page, then the product, then added it to the cart and finally placed an order. Here is what you would do on the frontend:
+Now let's create a user journey, calling the necessary frontend functions each step of the way:
 
+- The customer `johnybravo@gmail.com` opens your homepage (but they are **not** logged in your website yet)
 ```javascript
 window.metrilo.viewPage('http://my-awesome-shop.com/', { name: 'Awesome homepage' }) // This would be called on your homepage
+```
+
+- They navigate to the 'Awesome clothing' category
+```javascript
 window.metrilo.viewCategory('1') // This would be called on the 'Awesome clothing' category page
+```
+
+- They navigate to the 'Awesome T-shirt' product
+```javascript
 window.metrilo.viewProduct('2') // This would be called on the 'Awesome T-Shirt' product page
-window.metrilo.addToCart('2') // This would be called when a user clicks an add to cart button
+```
+
+- They add one 'Awesome T-Shirt' to the cart
+```javascript
+window.metrilo.addToCart('2', 1) // This would be called when a user clicks an add to cart button
+```
+
+- They start checkout
+```javascript
 window.metrilo.checkout() // This would be called whenever the customer starts the checkout process
 ```
 
-At that point, all of the actions are done by an anonymous user (you can check that in the Metrilo app) - you can either ask them to login now and use the email they provided:
+At that point, all of the actions are done by an anonymous user. In order to associate them with a customer in Metrilo you will need to obtain their email - by asking them to login, from your order details form, or any other form. When you do - call the [identify](#identify) function with their email:
 
 ```javascript
-window.metrilo.identify('johnybravo@gmail.com')
+window.metrilo.identify('johnybravo@gmail.com') // This would be called whenever the customer provides their email address
 ```
 
-...or wait until they fill their email inside your order details form. In any case, when they finish the order, you'll need to send the order event from your backend:
+- They submit the order
+When they submit the order, you'll need to send the order event from your backend:
 
 ```
-curl -X POST https://trk.mtrl.me/order" -H "Content-Type: text/plain" -d \
+curl -X POST https://trk.mtrl.me/order" -i -H "Content-Type: text/plain" -d \
 '{
   "time": 1518004715732,
   "token": "sh0p-t0k3n",
@@ -111,13 +133,19 @@ curl -X POST https://trk.mtrl.me/order" -H "Content-Type: text/plain" -d \
 }'
 ```
 
-That's it! Now when all events are processed by Metrilo, they will be attributed to the `johnybravo@gmail.com` user.
+And that's it! Now when all events are processed by Metrilo, they will be attributed to the `johnybravo@gmail.com` user. You can check that out in the `Customer Database` tab in your [Metrilo project](https://app.metrilo.com).
+
+:information_source: Please allow for up to several minutes for all events to be processed
+
+:information_source: You may end up with a slightly different picture than the one above - most likely due to different timestamps
+
+:information_source: If all backend calls return 204 and you're missing events - double check your input data
 
 ## API reference
 
 Our API documentation is written according to the [OpenAPI Specification](https://swagger.io/docs/specification/about/). You can find all of the endpoints the Metrilo API serves and what parameters they require [here](https://app.swaggerhub.com/apis/metrilo/api/1.0.0).
 
-:warning: The base url for each request is `https://trk.mtrl.me`. Don't forget that you need to add your Metrilo `API token` as a `token` parameter in the request body.
+:information_source: The base url for each request is `https://trk.mtrl.me`. Don't forget that you need to add your Metrilo `API token` as a `token` parameter in the request body.
 
 ### Creating and updating resources
 
@@ -132,11 +160,11 @@ A _resource_ is a **category**, **product**, **customer** or **order**. Any time
 
 All calls to these endpoints have to be done from your backend - therefore, we don't provide any specific code examples as the implementation is bound to your backend logic and programming language.
 
-:warning: Each Metrilo project has its own `API Token` and multiple stores cannot point to the same Metrilo project.
+:information_source: Each Metrilo project has its own `API Token` and multiple stores cannot point to the same Metrilo project.
 
-:warning: Most of the time the data you send will override any existing data. For example, if you make a call about product *A* with categories *C1* and *C2* and then you make another call only with category *C3*, then the first two categories will be removed from the product. However, sometimes the data will be merged (e.g. adding a product's options). If the data is merged, it will be explicitly mentioned in the documentation.
+:information_source: Most of the time the data you send will override any existing data. For example, if you make a call about product *A* with categories *C1* and *C2* and then you make another call only with category *C3*, then the first two categories will be removed from the product. However, sometimes the data will be merged (e.g. adding a product's options). If the data is merged, it will be explicitly mentioned in the documentation.
 
-:warning: Note that each request you send to Metrilo is limited to **5MB** in size.
+:information_source: Note that each request you send to Metrilo is limited to **5MB** in size.
 
 ### Importing resources
 
@@ -161,14 +189,14 @@ Insert the following script tag in the page you want to track (we recommend inse
 
 Replace `<YOUR_PROJECT_TOKEN>` with the API token from within the `Settings -> Installation` page in your Metrilo project.
 
-:warning: Make sure to remove the `<` and `>` symbols. So, for instance, if your token was `1234asdf`, you would need to put in this snippet:
+:information_source: Make sure to remove the `<` and `>` symbols. So, for instance, if your token was `1234asdf`, you would need to put in this snippet:
 ```
 <script type="text/javascript" src="https://trk.mtrl.me/tracking.js?token=1234asdf"></script>
 ```
 
 When you have successfully loaded the tracking library, you will have access to a `window.metrilo` object on your page.
 
-:warning: **You should add the script tag on every page that you want to track!**
+:information_source: **You should add the script tag on every page that you want to track!**
 
 ### Tracking events
 
@@ -192,9 +220,9 @@ These are the functions you need to call on the `window.metrilo` object based on
 
 :warning: It is extremely important _not_ to cache any customer-action-specific calls. This will result in events being attributed to the wrong customer, which cannot be undone. If you are using full page caching, consider adding some sort of hole-punching mechanism.
 
-:warning: Processing the calls to our API does not happen instantly - please allow for about a minute for them to be processed.
+:information_source: Processing the calls to our API does not happen instantly - please allow for about a minute for them to be processed.
 
-:warning: Keep in mind that if you try to send any tracking event for a resource that doesn't exist in Metrilo, your request won't be processed.
+:information_source: Keep in mind that if you try to send any tracking event for a resource that doesn't exist in Metrilo, your request won't be processed.
 
 #### Identify
 
@@ -202,7 +230,7 @@ When a customer comes to the store and they are not logged in, Metrilo treats th
 
 It is enough to call `identify` only once - the first time the customer enters their email. If you are unsure whether you have already called it - just check the value of the **cbuid** cookie. If there is an email - no need to call it. Otherwise it will contain the unique identifier mentioned above.
 
-:warning: Sometimes customers will log out, use different devices, browsers or delete their cookies. Every time that happens Metrilo will create a new anonymous customer with a new unique identifier. However, once the customer identifies themselves (enters their email and you call metrilo.identify) Metrilo will check for the existence of a customer with the entered email and if there is one, it will merge them with the anonymous customer.
+:information_source: Sometimes customers will log out, use different devices, browsers or delete their cookies. Every time that happens Metrilo will create a new anonymous customer with a new unique identifier. However, once the customer identifies themselves (enters their email and you call metrilo.identify) Metrilo will check for the existence of a customer with the entered email and if there is one, it will merge them with the anonymous customer.
 
 ```javascript
   const email = 'johnnybravo@gmail.com' // Customer's email address
