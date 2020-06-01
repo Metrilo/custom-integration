@@ -112,6 +112,7 @@ window.metrilo.identify('johnybravo@gmail.com') // This would be called whenever
 ```
 
 - They submit the order
+
 When they submit the order, you'll need to send the order event from your backend:
 
 ```
