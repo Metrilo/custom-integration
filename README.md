@@ -138,8 +138,6 @@ And that's it! Now when all events are processed by Metrilo, they will be attrib
 
 :information_source: Please allow for up to several minutes for all events to be processed
 
-:information_source: You may end up with a slightly different picture than the one above - most likely due to different timestamps
-
 :information_source: If all backend calls return 204 and you're missing events - double check your input data
 
 ## API reference
