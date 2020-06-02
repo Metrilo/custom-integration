@@ -1,6 +1,6 @@
-# Metrilo custom integration tutorial
+# Metrilo custom integration
 
-:information_source: **This guide is intended to be used by developers. If you're not a developer - please find one and come back later :)**
+:information_source: **This guide is intended to be used by developers.**
 
 Metrilo helps you track the events that the people visiting your shop do - viewing specific pages or products, adding products to the cart, making orders, etc. The provided data is transformed into different reports and analytics metrics you could benefit from.
 
