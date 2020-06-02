@@ -136,9 +136,9 @@ curl -X POST https://trk.mtrl.me/order" -i -H "Content-Type: text/plain" -d \
 
 And that's it! Now when all events are processed by Metrilo, they will be attributed to the `johnybravo@gmail.com` user. You can check that out in the `Customer Database` tab in your [Metrilo project](https://app.metrilo.com).
 
-:information_source: Please allow for up to several minutes for all events to be processed
+:information_source: Please allow for up to several minutes for all events to be processed.
 
-:information_source: If all backend calls return 204 and you're missing events - double check your input data
+:information_source: If all backend calls return 204 and you're missing events - double check your input data.
 
 ## API reference
 
