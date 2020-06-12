@@ -25,7 +25,9 @@ Once you've [signed up for a Metrilo account](https://app.metrilo.com/signup), n
 
 ![](images/api-token.png)
 
-First, we need to create some resources. Let's create a category, a product and a customer. We'll assume
+Now you need to import your shop's resources into Metrilo - categories, products, customers, orders. Then you can start registering actions on them - views, adds to cart, new orders.
+
+Let's create a category, a product and a customer. We'll assume
 the current time (in milliseconds since 1970) is `1518004715732`:
 
 ```
@@ -67,8 +69,9 @@ curl -X POST "https://trk.mtrl.me/customer" -i -H "Content-Type: text/plain" -d 
   }
 }'
 ```
-
 (We include the `-i` param so that you can verify a 204 status code for all these requests)
+
+(For all available properties for those resources, see the [managing resources](#creating-and-updating-resources) section and the [full API documentation](https://app.swaggerhub.com/apis/metrilo/api/1.0.0))
 
 The next step is to install the frontend library. Add the following snippet to your website (preferably the `<head>` tag):
 
@@ -85,7 +88,7 @@ Now let's create a user journey, calling the necessary frontend functions each s
 window.metrilo.viewPage('http://my-awesome-shop.com/', { name: 'Awesome homepage' }) // This would be called on your homepage
 ```
 
-- They navigate to the 'Awesome clothing' category
+- They navigate to the 'Awesome clothing' category (_category ID and all other IDs are from the shop's database and should be passed as strings_)
 ```javascript
 window.metrilo.viewCategory('1') // This would be called on the 'Awesome clothing' category page
 ```
@@ -105,7 +108,7 @@ window.metrilo.addToCart('2', 1) // This would be called when a user clicks an a
 window.metrilo.checkout() // This would be called whenever the customer starts the checkout process
 ```
 
-At that point, all of the actions are done by an anonymous user. In order to associate them with a customer in Metrilo you will need to obtain their email - by asking them to login, from your order details form, or any other form. When you do - call the [identify](#identify) function with their email:
+At that point, all of the actions are done by an anonymous user. In order to associate them with a customer in Metrilo you will need to obtain their email - by asking them to login, from your order details form, or any other form. When you do - call the [identify](#identify) function with their email. After the idenfity call, all past and future actions will be attributed to this customer.
 
 ```javascript
 window.metrilo.identify('johnybravo@gmail.com') // This would be called whenever the customer provides their email address
