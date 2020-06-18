@@ -25,7 +25,7 @@ paths:
             schema:
               $ref: '#/components/schemas/categoryOperationObject'
       responses:
-        '204':
+        '200':
           $ref: '#/components/responses/success'
         '400':
           $ref: '#/components/responses/errorBadRequest'
@@ -52,7 +52,7 @@ paths:
             schema:
               $ref: '#/components/schemas/categoryBatchOperationObject'
       responses:
-        '204':
+        '200':
           $ref: '#/components/responses/success'
         '400':
           $ref: '#/components/responses/errorBadRequest'
@@ -81,7 +81,7 @@ paths:
             schema:
               $ref: '#/components/schemas/customerOperationObject'
       responses:
-        '204':
+        '200':
           $ref: '#/components/responses/success'
         '400':
           $ref: '#/components/responses/errorBadRequest'
@@ -108,7 +108,7 @@ paths:
             schema:
               $ref: '#/components/schemas/customerBatchOperationObject'
       responses:
-        '204':
+        '200':
           $ref: '#/components/responses/success'
         '400':
           $ref: '#/components/responses/errorBadRequest'
@@ -135,7 +135,7 @@ paths:
             schema:
               $ref: '#/components/schemas/orderOperationObject'
       responses:
-        '204':
+        '200':
           $ref: '#/components/responses/success'
         '400':
           $ref: '#/components/responses/errorBadRequest'
@@ -162,7 +162,7 @@ paths:
             schema:
               $ref: '#/components/schemas/orderBatchOperationObject'
       responses:
-        '204':
+        '200':
           $ref: '#/components/responses/success'
         '400':
           $ref: '#/components/responses/errorBadRequest'
@@ -189,7 +189,7 @@ paths:
             schema:
               $ref: '#/components/schemas/productOperationObject'
       responses:
-        '204':
+        '200':
           $ref: '#/components/responses/success'
         '400':
           $ref: '#/components/responses/errorBadRequest'
@@ -216,7 +216,7 @@ paths:
             schema:
               $ref: '#/components/schemas/productBatchOperationObject'
       responses:
-        '204':
+        '200':
           $ref: '#/components/responses/success'
         '400':
           $ref: '#/components/responses/errorBadRequest'

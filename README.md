@@ -69,7 +69,7 @@ curl -X POST "https://trk.mtrl.me/customer" -i -H "Content-Type: text/plain" -d 
   }
 }'
 ```
-(We include the `-i` param so that you can verify a 204 status code for all these requests)
+(We include the `-i` param so that you can verify a 200 status code for all these requests)
 
 (For all available properties for those resources, see the [managing resources](#creating-and-updating-resources) section and the [full API documentation](https://app.swaggerhub.com/apis/metrilo/api/1.0.0))
 
@@ -141,7 +141,7 @@ And that's it! Now when all events are processed by Metrilo, they will be attrib
 
 :information_source: Please allow for up to several minutes for all events to be processed.
 
-:information_source: If all backend calls return 204 and you're missing events - double check your input data.
+:information_source: If all backend calls return 200 and you're missing events - double check your input data.
 
 ## API reference
 
@@ -349,7 +349,7 @@ The following error codes are valid for all endpoints:
 
 | Code | Message                                       |
 | :--- | :-------------------------------------------- |
-| 204  | Success response.                             |
+| 200  | Success response.                             |
 | 400  | Bad request from client.                      |
 | 401  | Project token is invalid.                     |
 | 402  | Project requires payment.                     |
