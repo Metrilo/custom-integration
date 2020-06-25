@@ -130,8 +130,10 @@ curl -X POST https://trk.mtrl.me/order" -i -H "Content-Type: text/plain" -d \
     "amount": "10.42",
     "status": "completed",
     "products": [
-      "productId": "2",
-      "quantity": 1
+      {
+        "productId": "2",
+        "quantity": 1
+      }
     ]
   }
 }'
