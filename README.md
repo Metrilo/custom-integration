@@ -208,19 +208,20 @@ A tracking event is an action that a customer of yours does on your website - su
 
 These are the functions you need to call on the `window.metrilo` object based on what a customer does on your website.
 
-| Whenever a customer                 | you need to call                  |
-| :---------------------------------- | :-------------------------------- |
-| enters their email on your website  | [identify](#identify)             |
-| visits a page                       | [viewPage](#viewPage)             |
-| visits an article page              | [viewArticle](#viewArticle)       |
-| visits a category page              | [viewCategory](#viewCategory)     |
-| visits a product page               | [viewProduct](#viewProduct)       |
-| types something in the search bar   | [search](#search)                 |
-| adds a product to their cart        | [addToCart](#addToCart)           |
-| removes a product from their cart   | [removeFromCart](#removeFromCart) |
-| visits the checkout page            | [checkout](#checkout)             |
-| does anything you'd like to tag     | [applyTags](#applyTags)           |
-| does anything                       | [customEvent](#customEvent)       |
+| Whenever a customer                 | you need to call                   |
+| :---------------------------------- | :--------------------------------- |
+| enters their email on your website  | [identify](#identify)              |
+| enters their details your website   | [customerDetails](#customerDetails)|
+| visits a page                       | [viewPage](#viewPage)              |
+| visits an article page              | [viewArticle](#viewArticle)        |
+| visits a category page              | [viewCategory](#viewCategory)      |
+| visits a product page               | [viewProduct](#viewProduct)        |
+| types something in the search bar   | [search](#search)                  |
+| adds a product to their cart        | [addToCart](#addToCart)            |
+| removes a product from their cart   | [removeFromCart](#removeFromCart)  |
+| visits the checkout page            | [checkout](#checkout)              |
+| does anything you'd like to tag     | [applyTags](#applyTags)            |
+| does anything                       | [customEvent](#customEvent)        |
 
 :warning: It is extremely important _not_ to cache any customer-action-specific calls. This will result in events being attributed to the wrong customer, which cannot be undone. If you are using full page caching, consider adding some sort of hole-punching mechanism.
 
@@ -240,6 +241,20 @@ It is enough to call `identify` only once - the first time the customer enters t
   const email = 'johnnybravo@gmail.com' // Customer's email address
 
   window.metrilo.identify(email)
+```
+
+#### customerDetails
+
+Customer has entered their details on a web form. This call updates the first name, last name and subscribed status of an existing customer.
+
+```javascript
+  const params = {
+    firstName: 'Johny', // Customer's first name
+    lastName: 'Bravo', // Customer's last name
+    subscribed: false // Subscribed status - true or false
+  }
+
+  window.metrilo.customerDetails(params)
 ```
 
 #### viewPage
