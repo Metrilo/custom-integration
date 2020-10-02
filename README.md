@@ -211,7 +211,7 @@ These are the functions you need to call on the `window.metrilo` object based on
 | Whenever a customer                 | you need to call                   |
 | :---------------------------------- | :--------------------------------- |
 | enters their email on your website  | [identify](#identify)              |
-| enters their details your website   | [customerDetails](#customerDetails)|
+| enters their details on your website| [customerDetails](#customerDetails)|
 | visits a page                       | [viewPage](#viewPage)              |
 | visits an article page              | [viewArticle](#viewArticle)        |
 | visits a category page              | [viewCategory](#viewCategory)      |
