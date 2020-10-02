@@ -249,9 +249,9 @@ Customer has entered their details on a web form. This call updates the first na
 
 ```javascript
   const params = {
-    firstName: 'Johny', // Customer's first name
-    lastName: 'Bravo', // Customer's last name
-    subscribed: false // Subscribed status - true or false
+    firstName: 'Johny', // Customer's first name (optional)
+    lastName: 'Bravo', // Customer's last name (optional)
+    subscribed: false // Subscribed status - true or false (optional)
   }
 
   window.metrilo.customerDetails(params)
