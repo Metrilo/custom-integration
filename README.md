@@ -383,12 +383,11 @@ You can integrate a form (such as a newsletter subscription form) with Metrilo u
           email: 'newsletter[fields][1]'
         });
     };
-    if ((typeof window.metrilo === 'undefined') || (typeof window.metrilo.integrateForm === 'undefined')) {
+    if ((typeof window.metrilo !== 'undefined') && (typeof window.metrilo.integrateForm !== 'undefined')) {
+      f();
+    } else {
       window.metriloQueue = window.metriloQueue || [];
       window.metriloQueue.push(f);
-    }
-    else {
-      f();
     }
   })();
 ```
