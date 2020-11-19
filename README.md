@@ -365,31 +365,32 @@ You can integrate a form (such as a newsletter subscription form) with Metrilo u
 ```javascript
   window.metrilo.integrateForm({
     formSelector: '#newsletter-form', // required - a regular css selector for the form
-    emailSelector: 'newsletter[fields][1]', // required - the name attribute of the "email" input field
-    firstNameSelector: 'newsletter[fields][0][first]', // optional - the name attribute of the "first name" input field
-    lastNameSelector: 'newsletter[fields][0][last]', // optional - the name attribute of the "last name" input field
-    subscribedSelector: 'newsletter[fields][2][]', // optional - the name attribute of the "subscribed"  checkbox
-    subscribed: false, // optional - if present will override the value from the checkbox
+    email: 'newsletter[fields][1]', // required - the name attribute of the "email" input field
+    firstName: 'newsletter[fields][0][first]', // optional - the name attribute of the "first name" input field
+    lastName: 'newsletter[fields][0][last]', // optional - the name attribute of the "last name" input field
+    subscribed: 'newsletter[fields][2][]', // optional - the name attribute of the "subscribed"  checkbox
     tags: ['newsletter-subscriber'], // optional - an array of tags to be applied
     customEvent: 'newsletter-subscribed' // optional - a custom event to be sent
-  })
+  });
 ```
 
 :information_source: If you're loading the main Metrilo script asynchronously, you can use the `window.metriloQueue` object to defer functions until Metrilo is loaded. For example:
 ```javascript
-  const f = function () {
-    window.metrilo.integrateForm({
-      formSelector: '#newsletter-form',
-      emailSelector: 'newsletter[fields][1]',
-    })
-  }
-
-  if (typeof window.metrilo === 'undefined') {
-    window.metriloQueue = window.metriloQueue || []
-    window.metriloQueue.push(f)
-  } else {
-    f()
-  }
+  (function() {
+    const f = function () {
+        window.metrilo.integrateForm({
+          formSelector: '#newsletter-form',
+          email: 'newsletter[fields][1]'
+        });
+    };
+    if ((typeof window.metrilo === 'undefined') || (typeof window.metrilo.integrateForm === 'undefined')) {
+      window.metriloQueue = window.metriloQueue || [];
+      window.metriloQueue.push(f);
+    }
+    else {
+      f();
+    }
+  })();
 ```
 
 ## Troubleshooting
