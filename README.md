@@ -59,7 +59,7 @@ $ curl -X POST "https://trk.mtrl.me/v2/customer" -i -H "Content-Type: text/plain
 
 (We include the `-i` param so that you can verify a 200 status code for all these requests)
 
-(For all available properties for those resources, see the [managing resources](#creating-and-updating-resources) section and the [full API documentation](https://app.swaggerhub.com/apis/metrilo/api/2.0.0))
+(For all available properties for those resources, see the [managing resources](#creating-and-updating-resources) section and the [full API documentation](https://app.swaggerhub.com/apis/metrilo/api/2.0.1))
 
 The next step is to install the frontend library. Add the following snippet to your website (preferably the `<head>` tag):
 
@@ -122,7 +122,7 @@ And that's it! Now when all events are processed by Metrilo, they will be attrib
 
 ## API reference
 
-Our API documentation is written according to the [OpenAPI Specification](https://swagger.io/docs/specification/about/). You can find all of the endpoints the Metrilo API serves and what parameters they require [here](https://app.swaggerhub.com/apis/metrilo/api/2.0.0).
+Our API documentation is written according to the [OpenAPI Specification](https://swagger.io/docs/specification/about/). You can find all of the endpoints the Metrilo API serves and what parameters they require [here](https://app.swaggerhub.com/apis/metrilo/api/2.0.1).
 
 :information_source: The base url for each request is `https://trk.mtrl.me/v2`. Don't forget that you need to add your Metrilo `API token` as a `token` parameter in the request body.
 
@@ -130,7 +130,7 @@ If you have integrated with the previous version of our API, the guide has been 
 
 ### Creating and updating resources
 
-A _resource_ is a **category**, **product**, **customer** or **order**. Any time one of these changes on your backend, you should call the respective endpoint to create or update the resource in Metrilo. You can find more details for each endpoint in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/2.0.0).
+A _resource_ is a **category**, **product**, **customer** or **order**. Any time one of these changes on your backend, you should call the respective endpoint to create or update the resource in Metrilo. You can find more details for each endpoint in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/2.0.1).
 
 | Endpoint           | Usage                               |
 | :----------------- | :---------------------------------- |
@@ -151,7 +151,7 @@ All calls to these endpoints have to be done from your backend - therefore, we d
 
 ### Importing resources
 
-Before sending any [tracking events](#tracking-events) to Metrilo, you need to import your data using the endpoints provided for each resource. **Note that importing must be done in the order provided.** You can find more details for each endpoint in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/2.0.0).
+Before sending any [tracking events](#tracking-events) to Metrilo, you need to import your data using the endpoints provided for each resource. **Note that importing must be done in the order provided.** You can find more details for each endpoint in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/2.0.1).
 
 | #  | Resource         | Endpoint          | Required |
 | :- | :--------------- | :---------------- | :------- |
