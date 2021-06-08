@@ -349,7 +349,7 @@ You can integrate a form (such as a newsletter subscription form) with Metrilo u
     email: 'newsletter[fields][1]', // required - the name attribute of the "email" input field
     firstName: 'newsletter[fields][0][first]', // optional - the name attribute of the "first name" input field
     lastName: 'newsletter[fields][0][last]', // optional - the name attribute of the "last name" input field
-    phoneNumber: 'newsletter[fields][0][first]', // optional - the name attribute of the "phone number" field
+    phoneNumber: 'newsletter[fields][3]', // optional - the name attribute of the "phone number" field
     subscribed: 'newsletter[fields][2][]', // optional - the name attribute of the "subscribed"  checkbox
     tags: ['newsletter-subscriber'], // optional - an array of tags to be applied
     customEvent: 'newsletter-subscribed' // optional - a custom event to be sent
