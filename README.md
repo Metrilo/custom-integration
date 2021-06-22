@@ -149,6 +149,16 @@ All calls to these endpoints have to be done from your backend - therefore, we d
 
 :information_source: Note that each request you send to Metrilo is limited to **5MB** in size.
 
+### Tag / Untag customer
+You can tag or untag existing Metrilo customers by calling the following endpoints from your backend.
+
+| Endpoint           | Usage                                                               |
+| :----------------- | :-------------------------------------------------------------------|
+| /customer/tag      | Adds tags to an existing customer (tags are merged, not overwritten)|
+| /customer/untag    | Removes tags from an existing customer (missing tags are omitted)   |
+
+:information_source: The `X-Digest` header **must** be used here as well.
+
 ### Importing resources
 
 Before sending any [tracking events](#tracking-events) to Metrilo, you need to import your data using the endpoints provided for each resource. **Note that importing must be done in the order provided.** You can find more details for each endpoint in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/2.0.1).
