@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  version: 1.0.0
+  version: 2.1.1
   title: Metrilo tracking API
   description: Metrilo analytics tracking API
   contact:
@@ -80,6 +80,60 @@ paths:
           text/plain:
             schema:
               $ref: '#/components/schemas/customerOperationObject'
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /customer/tag:
+    post:
+      tags:
+        - API
+      description: Adds tags to an existing customer in Metrilo.
+      operationId: customerTagOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/customerTagOperationObject'
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '400':
+          $ref: '#/components/responses/errorBadRequest'
+        '401':
+          $ref: '#/components/responses/errorUnauthorized'
+        '402':
+          $ref: '#/components/responses/errorPaymentRequired'
+        '403':
+          $ref: '#/components/responses/errorForbidden'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        '502':
+          $ref: '#/components/responses/badGateway'
+  /customer/untag:
+    post:
+      tags:
+        - API
+      description: Removes tags from an existing customer in Metrilo.
+      operationId: customerUntagOperation
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/customerUntagOperationObject'
       responses:
         '200':
           $ref: '#/components/responses/success'
@@ -314,7 +368,49 @@ components:
               type: array
               items:
                   type: string
-                  description: Tag labels that are assigned to users in the Metrilo application. (tags are merged, not overwritten)
+                  description: Tag labels that are assigned to the customer in Metrilo. (tags are merged, not overwritten)
+                  example:
+                    - early_subscriber
+                    - big_spender
+    customerTagObject:
+      allOf:
+        - $ref: '#/components/schemas/visitorIdentityObject'
+        - type: object
+          required:
+            - createdAt
+            - email
+            - tags
+          properties:
+            email:
+              type: string
+              description: The email of the customer.
+              example: johnybravo@metrilo.com
+            tags:
+              type: array
+              items:
+                  type: string
+                  description: Tag labels that are assigned to the customer in Metrilo. (tags are merged, not overwritten)
+                  example:
+                    - early_subscriber
+                    - big_spender
+    customerUntagObject:
+      allOf:
+        - $ref: '#/components/schemas/visitorIdentityObject'
+        - type: object
+          required:
+            - createdAt
+            - email
+            - tags
+          properties:
+            email:
+              type: string
+              description: The email of the customer.
+              example: johnybravo@metrilo.com
+            tags:
+              type: array
+              items:
+                  type: string
+                  description: Tag labels that are removed from the customer in Metrilo. (missing tags are omitted)
                   example:
                     - early_subscriber
                     - big_spender
@@ -519,6 +615,26 @@ components:
             params:
               allOf:
                 - $ref: '#/components/schemas/customerObject'
+    customerTagOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicBackendObject'
+        - type: object
+          required:
+            - params
+          properties:
+            params:
+              allOf:
+                - $ref: '#/components/schemas/customerTagObject'
+    customerUntagOperationObject:
+      allOf:
+        - $ref: '#/components/schemas/basicBackendObject'
+        - type: object
+          required:
+            - params
+          properties:
+            params:
+              allOf:
+                - $ref: '#/components/schemas/customerUntagObject'
     customerBatchOperationObject:
       allOf:
         - $ref: '#/components/schemas/basicBackendObject'

@@ -149,6 +149,37 @@ All calls to these endpoints have to be done from your backend - therefore, we d
 
 :information_source: Note that each request you send to Metrilo is limited to **5MB** in size.
 
+### Tag / Untag customer
+You can tag or untag existing Metrilo customers by calling the following endpoints from your backend.
+
+| Endpoint           | Usage                                                               |
+| :----------------- | :-------------------------------------------------------------------|
+| /customer/tag      | Adds tags to an existing customer (tags are merged, not overwritten)|
+| /customer/untag    | Removes tags from an existing customer (missing tags are omitted)   |
+
+#### Tag a customer
+
+```bash
+$ echo -n '{"time": 1518004715732, "token": "sh0p-t0k3n", "params": {"email": "test@metrilo.com", "tags": ["foo"]} }' | openssl dgst sha256 -hmac 'm3trilo-secr3t'
+ac9600a205af6aea7be1a4a3f8044d80fb9f4fb84ce9b550265650beefb12e4a
+
+curl -X POST "https://trk.mtrl.me/v2/customer/tag" -i -H "Content-Type: text/plain" -H "X-Digest: ac9600a205af6aea7be1a4a3f8044d80fb9f4fb84ce9b550265650beefb12e4a" -d '{"time": 1518004715732, "token": "sh0p-t0k3n", "params": {"email": "test@metrilo.com", "tags": ["foo"]} }'
+
+```
+
+#### Untag a customer
+
+```bash
+$ echo -n '{"time": 1518004715732, "token": "sh0p-t0k3n", "params": {"email": "test@metrilo.com", "tags": ["foo"]} }' | openssl dgst sha256 -hmac 'm3trilo-secr3t'
+a2fc3d7dbe351311b433a1cf54edf59ef96885f0dcd1ede6e508a5ceb4c98a89
+
+curl -X POST "https://trk.mtrl.me/v2/customer/untag" -i -H "Content-Type: text/plain" -H "X-Digest: a2fc3d7dbe351311b433a1cf54edf59ef96885f0dcd1ede6e508a5ceb4c98a89" -d '{"time": 1518004715732, "token": "sh0p-t0k3n", "params": {"email": "test@metrilo.com", "tags": ["foo"]} }'
+
+```
+
+
+:information_source: The `X-Digest` header **must** be used here as well.
+
 ### Importing resources
 
 Before sending any [tracking events](#tracking-events) to Metrilo, you need to import your data using the endpoints provided for each resource. **Note that importing must be done in the order provided.** You can find more details for each endpoint in the [documentation](https://app.swaggerhub.com/apis/metrilo/api/2.0.1).
